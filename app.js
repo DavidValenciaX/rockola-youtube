@@ -21,6 +21,12 @@ const YOUTUBE_CONSTANTS = {
   SEARCH_ENDPOINT: '/api/search' // Endpoint local del servidor
 };
 
+// Storage keys
+const STORAGE_KEYS = {
+  UPCOMING: 'upcoming',
+  CURRENT_VIDEO: 'current_video'
+};
+
 // Service
 app.service('YouTubeService', ['$window', '$rootScope', '$log', '$timeout', '$http', 'localStorageService', 
 function ($window, $rootScope, $log, $timeout, $http, localStorageService) {
@@ -38,7 +44,7 @@ function ($window, $rootScope, $log, $timeout, $http, localStorageService) {
   };
 
   let searchResults = [];
-  let upcoming = localStorageService.get('upcoming') || [
+  let upcoming = localStorageService.get(STORAGE_KEYS.UPCOMING) || [
     {id: 'kRJuY6ZDLPo', title: 'La Roux - In for the Kill (Twelves Remix)'},
     {id: '45YSGFctLws', title: 'Shout Out Louds - Illusions'},
     {id: 'ktoaj1IpTbw', title: 'CHVRCHES - Gun'},
@@ -63,6 +69,21 @@ function ($window, $rootScope, $log, $timeout, $http, localStorageService) {
   // YouTube player event handlers
   function onPlayerReady(event) {
     $log.info('YouTube Player is ready');
+    // Restaurar el video actual si existe
+    const current = localStorageService.get(STORAGE_KEYS.CURRENT_VIDEO);
+    if (current?.id) {
+      try {
+        youtube.player.cueVideoById(current.id);
+        youtube.videoId = current.id;
+        youtube.videoTitle = current.title;
+        youtube.state = 'paused';
+      } catch (e) {
+        $log.warn('No se pudo restaurar el video actual:', e);
+      }
+      if (!$rootScope.$$phase) {
+        $rootScope.$apply();
+      }
+    }
   }
 
   function onPlayerStateChange(event) {
@@ -121,6 +142,8 @@ function ($window, $rootScope, $log, $timeout, $http, localStorageService) {
     youtube.videoId = id;
     youtube.videoTitle = title;
     youtube.state = 'playing';
+    // Persistir el video actual
+    localStorageService.set(STORAGE_KEYS.CURRENT_VIDEO, { id: id, title: title });
     
     // Solo aplicar si no hay un ciclo de digest en progreso
     if (!$rootScope.$$phase) {
@@ -145,7 +168,7 @@ function ($window, $rootScope, $log, $timeout, $http, localStorageService) {
     if (upcoming.length > 0) {
       const nextVideo = upcoming.shift();
       this.playVideo(nextVideo.id, nextVideo.title);
-      localStorageService.set('upcoming', upcoming);
+      localStorageService.set(STORAGE_KEYS.UPCOMING, upcoming);
     }
   };
 
@@ -197,7 +220,7 @@ function ($window, $rootScope, $log, $timeout, $http, localStorageService) {
   this.queueVideo = function (id, title) {
     const video = { id: id, title: title };
     upcoming.push(video);
-    localStorageService.set('upcoming', upcoming);
+    localStorageService.set(STORAGE_KEYS.UPCOMING, upcoming);
     return upcoming;
   };
 
@@ -212,7 +235,7 @@ function ($window, $rootScope, $log, $timeout, $http, localStorageService) {
     }
     // Update localStorage
     if (list === upcoming) {
-      localStorageService.set('upcoming', upcoming);
+      localStorageService.set(STORAGE_KEYS.UPCOMING, upcoming);
     }
   };
 
