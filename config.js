@@ -61,10 +61,7 @@
       {id: 'zwJPcRtbzDk', title: 'Daft Punk - Human After All (SebastiAn Remix)'}
     ],
     
-    // Historial por defecto
-    DEFAULT_HISTORY: [
-      {id: 'XKa7Ywiv734', title: '[OFFICIAL HD] Daft Punk - Give Life Back To Music (feat. Nile Rodgers)'}
-    ],
+
     
     // Estados del reproductor
     PLAYER_STATES: {
@@ -78,7 +75,6 @@
     // Configuración de almacenamiento local
     STORAGE_KEYS: {
       PLAYLIST: 'juketube_playlist',
-      HISTORY: 'juketube_history',
       SETTINGS: 'juketube_settings'
     },
     

@@ -46,9 +46,7 @@ function ($window, $rootScope, $log, $timeout, $http, localStorageService) {
     {id: 'zwJPcRtbzDk', title: 'Daft Punk - Human After All (SebastiAn Remix)'}
   ];
 
-  let history = localStorageService.get('history') || [
-    {id: 'XKa7Ywiv734', title: '[OFFICIAL HD] Daft Punk - Give Life Back To Music (feat. Nile Rodgers)'}
-  ];
+
 
   // Initialize YouTube API
   $window.onYouTubeIframeAPIReady = function () {
@@ -65,16 +63,6 @@ function ($window, $rootScope, $log, $timeout, $http, localStorageService) {
   // YouTube player event handlers
   function onPlayerReady(event) {
     $log.info('YouTube Player is ready');
-    if (history.length > 0) {
-      youtube.player.cueVideoById(history[0].id);
-      youtube.videoId = history[0].id;
-      youtube.videoTitle = history[0].title;
-      
-      // Solo aplicar si no hay un ciclo de digest en progreso
-      if (!$rootScope.$$phase) {
-        $rootScope.$apply();
-      }
-    }
   }
 
   function onPlayerStateChange(event) {
@@ -157,17 +145,11 @@ function ($window, $rootScope, $log, $timeout, $http, localStorageService) {
     if (upcoming.length > 0) {
       const nextVideo = upcoming.shift();
       this.playVideo(nextVideo.id, nextVideo.title);
-      this.archiveVideo(nextVideo.id, nextVideo.title);
       localStorageService.set('upcoming', upcoming);
     }
   };
 
-  this.playPrevious = function() {
-    if (history.length > 1) {
-      const prevVideo = history[1]; // Skip current video
-      this.playVideo(prevVideo.id, prevVideo.title);
-    }
-  };
+
 
   // Search videos using our proxy to YouTube web
   this.searchVideos = function(query, callback) {
@@ -219,15 +201,7 @@ function ($window, $rootScope, $log, $timeout, $http, localStorageService) {
     return upcoming;
   };
 
-  this.archiveVideo = function (id, title) {
-    const video = { id: id, title: title };
-    history.unshift(video);
-    if (history.length > 50) { // Limit history to 50 items
-      history = history.slice(0, 50);
-    }
-    localStorageService.set('history', history);
-    return history;
-  };
+
 
   this.deleteVideo = function (list, id) {
     for (let i = list.length - 1; i >= 0; i--) {
@@ -239,8 +213,6 @@ function ($window, $rootScope, $log, $timeout, $http, localStorageService) {
     // Update localStorage
     if (list === upcoming) {
       localStorageService.set('upcoming', upcoming);
-    } else if (list === history) {
-      localStorageService.set('history', history);
     }
   };
 
@@ -257,9 +229,7 @@ function ($window, $rootScope, $log, $timeout, $http, localStorageService) {
     return upcoming;
   };
 
-  this.getHistory = function () {
-    return history;
-  };
+
 
 }]);
 
@@ -272,8 +242,6 @@ app.controller('VideosController', function ($scope, $log, $timeout, YouTubeServ
     $scope.youtube = YouTubeService.getYoutube();
     $scope.searchResults = YouTubeService.getSearchResults();
     $scope.upcoming = YouTubeService.getUpcoming();
-    $scope.history = YouTubeService.getHistory();
-    $scope.playlist = true;
     $scope.query = '';
     
     // Initialize player after a short delay
@@ -287,20 +255,19 @@ app.controller('VideosController', function ($scope, $log, $timeout, YouTubeServ
 
   $scope.launch = function (id, title) {
     YouTubeService.playVideo(id, title);
-    YouTubeService.archiveVideo(id, title);
     YouTubeService.deleteVideo($scope.upcoming, id);
     $log.info('Launched: ' + title);
   };
 
   $scope.queue = function (id, title) {
     YouTubeService.queueVideo(id, title);
-    YouTubeService.deleteVideo($scope.history, id);
     $log.info('Queued: ' + title);
   };
 
   $scope.delete = function (listName, id) {
-    const list = listName === 'upcoming' ? $scope.upcoming : $scope.history;
-    YouTubeService.deleteVideo(list, id);
+    if (listName === 'upcoming') {
+      YouTubeService.deleteVideo($scope.upcoming, id);
+    }
   };
 
   $scope.search = function () {
@@ -312,9 +279,7 @@ app.controller('VideosController', function ($scope, $log, $timeout, YouTubeServ
     }
   };
 
-  $scope.tabulate = function (state) {
-    $scope.playlist = state;
-  };
+
 
   // Control functions
   $scope.togglePlay = function() {
@@ -333,9 +298,7 @@ app.controller('VideosController', function ($scope, $log, $timeout, YouTubeServ
     YouTubeService.playNext();
   };
 
-  $scope.prevVideo = function() {
-    YouTubeService.playPrevious();
-  };
+
 
   $scope.addToPlaylist = function() {
     if ($scope.youtube.videoId && $scope.youtube.videoTitle) {
@@ -347,7 +310,6 @@ app.controller('VideosController', function ($scope, $log, $timeout, YouTubeServ
   $scope.removeFromPlaylist = function() {
     if ($scope.youtube.videoId) {
       YouTubeService.deleteVideo($scope.upcoming, $scope.youtube.videoId);
-      YouTubeService.deleteVideo($scope.history, $scope.youtube.videoId);
       $log.info('Removed from playlist: ' + $scope.youtube.videoTitle);
     }
   };

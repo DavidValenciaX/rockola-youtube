@@ -20,7 +20,7 @@
         <a id="play" data-ng-click="togglePlay()">{{ youtube.state }}</a>
         <a id="pause" data-ng-click="pause()">Pause</a>
         <a id="next" data-ng-click="nextVideo()">Next</a>
-        <a id="prev" data-ng-click="prevVideo()">Previous</a>
+
       </nav>
     </header>
     
@@ -53,22 +53,12 @@
         
         <div id="playlist">
           <h3>Playlist</h3>
-          <ol id="upcoming" data-ng-show="playlist">
+          <ol id="upcoming">
             <li data-ng-repeat="video in upcoming">
               <p class="item-delete" data-ng-click="delete('upcoming', video.id)">delete</p>
               <p class="item-title" data-ng-click="launch(video.id, video.title)">{{video.title}}</p>
             </li>
           </ol>
-          <ol id="history" data-ng-hide="playlist">
-            <li data-ng-repeat="video in history">
-              <p class="item-delete" data-ng-click="delete('history', video.id)">delete</p>
-              <p class="item-title" data-ng-click="queue(video.id, video.title)">{{video.title}}</p>
-            </li>
-          </ol>
-          <p id="tabs">
-            <a ng-class="{on:playlist}" data-ng-click="tabulate(true)">Upcoming</a>
-            <a ng-class="{on:!playlist}" data-ng-click="tabulate(false)">History</a>
-          </p>
         </div>
       </div>
     </div>
