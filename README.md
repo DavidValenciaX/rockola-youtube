@@ -77,6 +77,10 @@ juketube/
 
 ## 🔧 Instalación y Uso
 
+### Requisitos
+
+- **Node.js**: Versión 18.11.0 o superior (necesario para el modo de desarrollo con `--watch`)
+
 ### Instalación
 
 1. **Clona el repositorio**:
@@ -97,7 +101,11 @@ juketube/
 **⚠️ Importante**: Para evitar problemas de CORS con las APIs de búsqueda, es recomendable usar el servidor HTTP incluido:
 
 ```bash
+# Iniciar servidor en modo producción
 npm start
+
+# Iniciar servidor en modo desarrollo con auto-recarga (Node.js ≥18.11.0)
+npm run dev
 ```
 
 Luego visita: **<http://localhost:3000>**
