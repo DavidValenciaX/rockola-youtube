@@ -74,24 +74,58 @@ juketube/
 
 ## 🔧 Instalación y Uso
 
+### Instalación
+
 1. **Clona el repositorio**:
    ```bash
    git clone https://github.com/tu-usuario/juketube.git
    cd juketube
    ```
 
-2. **Abre en tu navegador**:
-   - Simplemente abre `index.html` en tu navegador web
-   - O usa un servidor local:
-     ```bash
-     python -m http.server 8000
-     # Luego visita http://localhost:8000
-     ```
+2. **Instala las dependencias**:
+   ```bash
+   npm install
+   ```
 
-3. **¡Disfruta de la música!**:
-   - La aplicación cargará la interfaz web de YouTube
-   - Usa los controles para gestionar tu playlist
-   - Busca y reproduce videos directamente
+### Uso Recomendado (Servidor HTTP)
+
+**⚠️ Importante**: Para evitar problemas de CORS con las APIs de búsqueda, es recomendable usar el servidor HTTP incluido:
+
+```bash
+npm start
+```
+
+Luego visita: **http://localhost:3000**
+
+### Uso Alternativo (Archivo Local)
+
+También puedes abrir directamente el archivo:
+- Abre `index.html` en tu navegador web
+- **Nota**: Algunas funciones de búsqueda pueden no funcionar debido a restricciones CORS
+
+### Otros servidores locales
+
+Si prefieres usar otros servidores:
+```bash
+# Python 3
+python -m http.server 8000
+
+# Python 2
+python -S SimpleHTTPServer 8000
+
+# Node.js (live-server)
+npx live-server
+
+# PHP
+php -S localhost:8000
+```
+
+### ¡Disfruta de la música!
+
+- La aplicación cargará con una playlist por defecto
+- Usa la barra de búsqueda para encontrar videos
+- Gestiona tu playlist con los controles de la interfaz
+- Los videos se reproducen usando el reproductor oficial de YouTube
 
 ## 🎯 Limitaciones
 

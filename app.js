@@ -49,9 +49,7 @@ function ($window, $rootScope, $log, $timeout, $http, localStorageService) {
     {id: '45YSGFctLws', title: 'Shout Out Louds - Illusions'},
     {id: 'ktoaj1IpTbw', title: 'CHVRCHES - Gun'},
     {id: '8Zh0tY2NfLs', title: 'N.E.R.D. ft. Nelly Furtado - Hot N Fun (Boys Noize Remix) HQ'},
-    {id: 'zwJPcRtbzDk', title: 'Daft Punk - Human After All (SebastiAn Remix)'},
-    {id: 'sEwM6ERq0gc', title: 'HAIM - Forever (Official Music Video)'},
-    {id: 'fTK4XTvZWmk', title: 'Housse De Racket ☃☀☃ Apocalypso'}
+    {id: 'zwJPcRtbzDk', title: 'Daft Punk - Human After All (SebastiAn Remix)'}
   ];
 
   var history = localStorageService.get('history') || [
@@ -193,10 +191,53 @@ function ($window, $rootScope, $log, $timeout, $http, localStorageService) {
       if (callback) callback(results);
       $rootScope.$apply();
       
-    }).catch(function(error) {
+    }, function(error) {
       $log.error('Search error:', error);
       // Fallback to next Invidious instance or show error
+      service.tryNextInvidiousInstance(query, callback, 1);
+    });
+  };
+
+  // Try next Invidious instance if current one fails
+  this.tryNextInvidiousInstance = function(query, callback, instanceIndex) {
+    if (instanceIndex >= YOUTUBE_CONSTANTS.INVIDIOUS_INSTANCES.length) {
+      $log.error('All Invidious instances failed');
       if (callback) callback([]);
+      return;
+    }
+
+    var searchUrl = YOUTUBE_CONSTANTS.INVIDIOUS_INSTANCES[instanceIndex] + '/api/v1/search';
+    
+    $http.get(searchUrl, {
+      params: {
+        q: query,
+        type: 'video',
+        max_results: 10
+      }
+    }).then(function(response) {
+      var results = response.data.map(function(item) {
+        return {
+          id: item.videoId,
+          title: item.title,
+          author: item.author,
+          thumbnail: item.videoThumbnails && item.videoThumbnails[0] ? 
+                    item.videoThumbnails[0].url : 
+                    'https://i.ytimg.com/vi/' + item.videoId + '/default.jpg',
+          description: item.description || '',
+          duration: item.lengthSeconds
+        };
+      });
+      
+      searchResults.length = 0;
+      Array.prototype.push.apply(searchResults, results);
+      
+      if (callback) callback(results);
+      $rootScope.$apply();
+      
+    }, function(error) {
+      $log.error('Search error with instance ' + instanceIndex + ':', error);
+      // Try next instance
+      service.tryNextInvidiousInstance(query, callback, instanceIndex + 1);
     });
   };
 

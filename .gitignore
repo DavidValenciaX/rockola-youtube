@@ -2,3 +2,5 @@
 /fonts
 /jquery
 .idea/
+
+node_modules/
