@@ -5,7 +5,7 @@ address, caption, cite, code, dfn, var{ font-style: normal; font-weight: normal;
 ol, ul{ list-style: none;}
 caption, th{ text-align: left;}
 h1, h2, h3, h4, h5, h6{ font-size: 100%; font-weight: normal;}
-q: before, q: after{ content: '';}
+q:before, q:after{ content: '';}
 abbr, acronym{ border: 0;}
 
 html{ background: #eee url(shattered.png) repeat top center;}
@@ -171,7 +171,6 @@ nav{ float: right; line-height: 40px; text-align: center; width: 240px;}
 
 #playlist ol, #playlist li{ cursor: pointer;}
 #playlist ol{ 
-  border-bottom: 1px solid #33363f; 
   flex: 1;
   overflow-y: auto;
   margin: 0;
