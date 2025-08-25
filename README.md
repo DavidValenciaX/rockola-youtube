@@ -1,51 +1,139 @@
-JukeTube
-========
+# JukeTube - YouTube Web Interface
 
-A YouTube powered jukebox built with AngularJS.
+Una aplicación de música que utiliza la interfaz web oficial de YouTube para reproducir videos, similar a YouTube Music Desktop.
 
-[![JukeTube screenshot](https://raw.github.com/jgthms/juketube/master/juketube.png)](https://jgthms.com/juketube/)
+## 🎵 Características
 
-## Demo
+- **Interfaz Web de YouTube**: Usa la interfaz oficial de YouTube en lugar de APIs
+- **Reproducción Directa**: Acceso completo a todas las funciones de YouTube
+- **Playlist Personal**: Gestiona tu propia lista de reproducción
+- **Búsqueda Integrada**: Busca videos directamente en YouTube
+- **Controles de Reproducción**: Play, pause, siguiente, anterior
+- **Historial**: Mantiene un registro de videos reproducidos
+- **Diseño Responsivo**: Funciona en diferentes tamaños de pantalla
 
-[jgthms.com/juketube/](https://jgthms.com/juketube/)
+## 🚀 Cómo Funciona
 
-## Purpose
+### Enfoque Híbrido Inteligente
 
-When I attend parties, YouTube is often used as the sole music provider. People in turn launch the video they want to hear. The process goes as follows:
+Esta aplicación utiliza una **estrategia híbrida** que combina lo mejor de ambos mundos:
 
-* open a new tab
-* browse to YouTube
-* search for a video
-* open and instantly pause it (to preload it)
-* wait for the current video to stop
-* launch the new video
+1. **YouTube Embed API**: Usa el reproductor oficial embebido (permitido por YouTube)
+2. **API Invidious**: Utiliza APIs libres y sin límites para búsquedas
+3. **Almacenamiento Local**: Guarda playlists y configuración en el navegador
+4. **Interfaz Personalizada**: Control total sobre la experiencia de usuario
 
-Several problems arise from this process:
+### Ventajas de este Enfoque
 
-* need to wait for the current video to stop before launching a new one
-* need to permanently have someone queuing and launching a new video
-* no automatic play, so if the current video ends, there's no music
-* time spent queuing a new video
-* tons of tabs opened
+✅ **Reproductor Oficial**: Usa el reproductor embebido oficial de YouTube  
+✅ **Búsqueda Sin Límites**: APIs libres sin cuotas ni restricciones  
+✅ **Funcionalidad Completa**: Acceso a todas las características de reproducción  
+✅ **Persistencia Local**: Guarda playlists y configuración localmente  
+✅ **Sin Bloqueos**: Evita las restricciones de X-Frame-Options  
+✅ **Estable**: Combinación robusta de tecnologías probadas  
 
-## Features
+## 🛠️ Tecnologías Utilizadas
 
-JukeTube is an attempt to simplify this scenario.
+- **AngularJS**: Framework frontend
+- **YouTube Embed API**: Reproductor oficial embebido
+- **Invidious API**: Búsqueda libre sin límites
+- **LocalStorage**: Persistencia de datos local
+- **JavaScript**: Lógica de aplicación y comunicación con APIs
+- **CSS3**: Diseño moderno y responsivo
 
-* Single page app
-* Ajax search
-* Playlists (upcoming and archived videos)
-* Automatic play (as soon as the current video ends)
+## 📁 Estructura del Proyecto
 
-## Requirements
+```
+juketube/
+├── index.html              # Página principal
+├── app.js                  # Lógica de la aplicación AngularJS
+├── youtube-iframe-handler.js # Manejador del iframe de YouTube
+├── style.css               # Estilos CSS
+├── angular.min.js          # AngularJS framework
+├── angular-local-storage.js # Plugin de almacenamiento local
+└── README.md               # Este archivo
+```
 
-You only need a valid [YouTube Data API v3 key](https://developers.google.com/youtube/v3/) to copy-paste in **app.js**. (The current one only works on my domain).
+## 🎮 Funcionalidades
 
-## Possible enhancements
+### Reproducción de Videos
+- Haz clic en cualquier video de la playlist para reproducirlo
+- Usa los controles de reproducción (play, pause, siguiente, anterior)
+- El video se reproduce directamente en la interfaz de YouTube
 
-* Play/Pause/Next/Previous controls (currently, only the state is shown).
-* Use the YouTube API to retrieve the pre-populated video titles using the ID. Right now, the titles are hard-coded.
-* Save the current playlist in LocalStorage or a cookie and restore it on the next visit
-* Add a `Clear playlist` button.
-* Add drag controls to reorder the playlist items.
-* Add search results pagination (the YouTube API provides a `pageToken` parameter).
+### Gestión de Playlist
+- **Upcoming**: Videos en cola para reproducir
+- **History**: Videos ya reproducidos
+- Añade videos a la playlist con el botón "Add to Playlist"
+- Elimina videos con el botón "delete"
+
+### Búsqueda
+- Busca videos directamente en YouTube
+- Los resultados aparecen en la interfaz web de YouTube
+- Haz clic en cualquier video para reproducirlo
+
+## 🔧 Instalación y Uso
+
+1. **Clona el repositorio**:
+   ```bash
+   git clone https://github.com/tu-usuario/juketube.git
+   cd juketube
+   ```
+
+2. **Abre en tu navegador**:
+   - Simplemente abre `index.html` en tu navegador web
+   - O usa un servidor local:
+     ```bash
+     python -m http.server 8000
+     # Luego visita http://localhost:8000
+     ```
+
+3. **¡Disfruta de la música!**:
+   - La aplicación cargará la interfaz web de YouTube
+   - Usa los controles para gestionar tu playlist
+   - Busca y reproduce videos directamente
+
+## 🎯 Limitaciones
+
+❌ **Dependiente de la interfaz web**: Si YouTube cambia drásticamente la interfaz, puede romper funcionalidades  
+❌ **Sin acceso directo a datos**: No puede acceder directamente a metadatos o streams de audio  
+❌ **Limitado por la web**: Solo puede hacer lo que la interfaz web permite  
+❌ **Políticas CORS**: Algunas funcionalidades pueden estar limitadas por las políticas de seguridad del navegador  
+
+## 🔄 Comparación con la Versión Anterior
+
+| Característica | Versión API | Versión Web Interface |
+|----------------|-------------|----------------------|
+| **Dependencias** | API Key de YouTube | Ninguna |
+| **Límites** | Cuotas de API | Sin límites |
+| **Actualizaciones** | Manual | Automática |
+| **Funcionalidad** | Limitada | Completa |
+| **Estabilidad** | Propensa a cambios de API | Más estable |
+
+## 🤝 Contribuciones
+
+Las contribuciones son bienvenidas. Por favor:
+
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
+
+## 📄 Licencia
+
+Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
+
+## 👨‍💻 Autor
+
+**J. Thomas** - [GitHub](https://github.com/jgthms)
+
+## 🙏 Agradecimientos
+
+- YouTube por proporcionar una interfaz web excelente
+- AngularJS por el framework frontend
+- La comunidad de desarrolladores por las ideas y contribuciones
+
+---
+
+**Nota**: Esta aplicación es para uso educativo y personal. Respeta los términos de servicio de YouTube.
