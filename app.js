@@ -297,21 +297,4 @@ app.controller('VideosController', function ($scope, $log, $timeout, YouTubeServ
   $scope.nextVideo = function() {
     YouTubeService.playNext();
   };
-
-
-
-  $scope.addToPlaylist = function() {
-    if ($scope.youtube.videoId && $scope.youtube.videoTitle) {
-      YouTubeService.queueVideo($scope.youtube.videoId, $scope.youtube.videoTitle);
-      $log.info('Added to playlist: ' + $scope.youtube.videoTitle);
-    }
-  };
-
-  $scope.removeFromPlaylist = function() {
-    if ($scope.youtube.videoId) {
-      YouTubeService.deleteVideo($scope.upcoming, $scope.youtube.videoId);
-      $log.info('Removed from playlist: ' + $scope.youtube.videoTitle);
-    }
-  };
-
 });

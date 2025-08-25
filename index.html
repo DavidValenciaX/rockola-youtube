@@ -45,10 +45,6 @@
         <div id="current-video-info">
           <h3>Now Playing</h3>
           <p id="current">{{ youtube.videoTitle || 'No video playing' }}</p>
-          <div id="video-controls">
-            <button data-ng-click="addToPlaylist()" data-ng-disabled="!youtube.videoId">Add to Playlist</button>
-            <button data-ng-click="removeFromPlaylist()" data-ng-disabled="!youtube.videoId">Remove</button>
-          </div>
         </div>
         
         <div id="playlist">
