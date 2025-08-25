@@ -43,7 +43,7 @@ Esta aplicación utiliza una **estrategia híbrida** que combina lo mejor de amb
 
 ## 📁 Estructura del Proyecto
 
-```
+```bash
 juketube/
 ├── index.html              # Página principal
 ├── app.js                  # Lógica de la aplicación AngularJS
@@ -57,17 +57,20 @@ juketube/
 ## 🎮 Funcionalidades
 
 ### Reproducción de Videos
+
 - Haz clic en cualquier video de la playlist para reproducirlo
 - Usa los controles de reproducción (play, pause, siguiente, anterior)
 - El video se reproduce directamente en la interfaz de YouTube
 
 ### Gestión de Playlist
+
 - **Upcoming**: Videos en cola para reproducir
 - **History**: Videos ya reproducidos
 - Añade videos a la playlist con el botón "Add to Playlist"
 - Elimina videos con el botón "delete"
 
 ### Búsqueda
+
 - Busca videos directamente en YouTube
 - Los resultados aparecen en la interfaz web de YouTube
 - Haz clic en cualquier video para reproducirlo
@@ -77,12 +80,14 @@ juketube/
 ### Instalación
 
 1. **Clona el repositorio**:
+
    ```bash
    git clone https://github.com/tu-usuario/juketube.git
    cd juketube
    ```
 
 2. **Instala las dependencias**:
+
    ```bash
    npm install
    ```
@@ -95,17 +100,19 @@ juketube/
 npm start
 ```
 
-Luego visita: **http://localhost:3000**
+Luego visita: **<http://localhost:3000>**
 
 ### Uso Alternativo (Archivo Local)
 
 También puedes abrir directamente el archivo:
+
 - Abre `index.html` en tu navegador web
 - **Nota**: Algunas funciones de búsqueda pueden no funcionar debido a restricciones CORS
 
 ### Otros servidores locales
 
 Si prefieres usar otros servidores:
+
 ```bash
 # Python 3
 python -m http.server 8000
@@ -120,7 +127,7 @@ npx live-server
 php -S localhost:8000
 ```
 
-### ¡Disfruta de la música!
+### Disfruta de la música
 
 - La aplicación cargará con una playlist por defecto
 - Usa la barra de búsqueda para encontrar videos

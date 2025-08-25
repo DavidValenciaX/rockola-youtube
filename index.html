@@ -1,5 +1,5 @@
 <!doctype html>
-<html data-ng-app="JukeTubeApp">
+<html lang="es" data-ng-app="JukeTubeApp">
   <head>
     <meta charset="utf-8">
     <title>JukeTube - YouTube Web Interface</title>
@@ -31,7 +31,7 @@
         <div id="search-results" data-ng-show="searchResults && searchResults.length > 0">
           <h3>Search Results</h3>
           <div class="search-result" data-ng-repeat="video in searchResults" data-ng-click="queue(video.id, video.title)">
-            <img class="search-thumbnail" data-ng-src="{{ video.thumbnail }}">
+            <img class="search-thumbnail" data-ng-src="{{ video.thumbnail }}" alt="{{ video.title }}">
             <div class="search-info">
               <p class="search-title">{{ video.title }}</p>
               <p class="search-author">{{ video.author }}</p>

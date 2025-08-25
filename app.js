@@ -1,4 +1,4 @@
-var app = angular.module('JukeTubeApp', ['LocalStorageModule']);
+const app = angular.module('JukeTubeApp', ['LocalStorageModule']);
 
 // Config
 app.config(function ($httpProvider) {
@@ -7,9 +7,9 @@ app.config(function ($httpProvider) {
 
 // Run - Load YouTube Iframe API
 app.run(function () {
-  var tag = document.createElement('script');
+  const tag = document.createElement('script');
   tag.src = "https://www.youtube.com/iframe_api";
-  var firstScriptTag = document.getElementsByTagName('script')[0];
+  const firstScriptTag = document.getElementsByTagName('script')[0];
   firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 });
 
@@ -31,9 +31,9 @@ const YOUTUBE_CONSTANTS = {
 app.service('YouTubeService', ['$window', '$rootScope', '$log', '$timeout', '$http', 'localStorageService', 
 function ($window, $rootScope, $log, $timeout, $http, localStorageService) {
 
-  var service = this;
+  const service = this;
 
-  var youtube = {
+  const youtube = {
     ready: false,
     player: null,
     videoId: null,
@@ -43,8 +43,8 @@ function ($window, $rootScope, $log, $timeout, $http, localStorageService) {
     duration: 0
   };
 
-  var searchResults = [];
-  var upcoming = localStorageService.get('upcoming') || [
+  let searchResults = [];
+  let upcoming = localStorageService.get('upcoming') || [
     {id: 'kRJuY6ZDLPo', title: 'La Roux - In for the Kill (Twelves Remix)'},
     {id: '45YSGFctLws', title: 'Shout Out Louds - Illusions'},
     {id: 'ktoaj1IpTbw', title: 'CHVRCHES - Gun'},
@@ -52,7 +52,7 @@ function ($window, $rootScope, $log, $timeout, $http, localStorageService) {
     {id: 'zwJPcRtbzDk', title: 'Daft Punk - Human After All (SebastiAn Remix)'}
   ];
 
-  var history = localStorageService.get('history') || [
+  let history = localStorageService.get('history') || [
     {id: 'XKa7Ywiv734', title: '[OFFICIAL HD] Daft Punk - Give Life Back To Music (feat. Nile Rodgers)'}
   ];
 
@@ -132,20 +132,20 @@ function ($window, $rootScope, $log, $timeout, $http, localStorageService) {
 
   // Control functions
   this.play = function() {
-    if (youtube.player && youtube.player.playVideo) {
+    if (youtube.player?.playVideo) {
       youtube.player.playVideo();
     }
   };
 
   this.pause = function() {
-    if (youtube.player && youtube.player.pauseVideo) {
+    if (youtube.player?.pauseVideo) {
       youtube.player.pauseVideo();
     }
   };
 
   this.playNext = function() {
     if (upcoming.length > 0) {
-      var nextVideo = upcoming.shift();
+      const nextVideo = upcoming.shift();
       this.playVideo(nextVideo.id, nextVideo.title);
       this.archiveVideo(nextVideo.id, nextVideo.title);
       localStorageService.set('upcoming', upcoming);
@@ -154,7 +154,7 @@ function ($window, $rootScope, $log, $timeout, $http, localStorageService) {
 
   this.playPrevious = function() {
     if (history.length > 1) {
-      var prevVideo = history[1]; // Skip current video
+      const prevVideo = history[1]; // Skip current video
       this.playVideo(prevVideo.id, prevVideo.title);
     }
   };
@@ -163,7 +163,7 @@ function ($window, $rootScope, $log, $timeout, $http, localStorageService) {
   this.searchVideos = function(query, callback) {
     if (!query) return;
 
-    var searchUrl = YOUTUBE_CONSTANTS.INVIDIOUS_INSTANCES[0] + '/api/v1/search';
+    const searchUrl = YOUTUBE_CONSTANTS.INVIDIOUS_INSTANCES[0] + '/api/v1/search';
     
     $http.get(searchUrl, {
       params: {
@@ -172,13 +172,12 @@ function ($window, $rootScope, $log, $timeout, $http, localStorageService) {
         max_results: 10
       }
     }).then(function(response) {
-      var results = response.data.map(function(item) {
+      const results = response.data.map(function(item) {
         return {
           id: item.videoId,
           title: item.title,
           author: item.author,
-          thumbnail: item.videoThumbnails && item.videoThumbnails[0] ? 
-                    item.videoThumbnails[0].url : 
+          thumbnail: item.videoThumbnails?.[0]?.url || 
                     'https://i.ytimg.com/vi/' + item.videoId + '/default.jpg',
           description: item.description || '',
           duration: item.lengthSeconds
@@ -206,7 +205,7 @@ function ($window, $rootScope, $log, $timeout, $http, localStorageService) {
       return;
     }
 
-    var searchUrl = YOUTUBE_CONSTANTS.INVIDIOUS_INSTANCES[instanceIndex] + '/api/v1/search';
+    const searchUrl = YOUTUBE_CONSTANTS.INVIDIOUS_INSTANCES[instanceIndex] + '/api/v1/search';
     
     $http.get(searchUrl, {
       params: {
@@ -215,13 +214,12 @@ function ($window, $rootScope, $log, $timeout, $http, localStorageService) {
         max_results: 10
       }
     }).then(function(response) {
-      var results = response.data.map(function(item) {
+      const results = response.data.map(function(item) {
         return {
           id: item.videoId,
           title: item.title,
           author: item.author,
-          thumbnail: item.videoThumbnails && item.videoThumbnails[0] ? 
-                    item.videoThumbnails[0].url : 
+          thumbnail: item.videoThumbnails?.[0]?.url || 
                     'https://i.ytimg.com/vi/' + item.videoId + '/default.jpg',
           description: item.description || '',
           duration: item.lengthSeconds
@@ -243,14 +241,14 @@ function ($window, $rootScope, $log, $timeout, $http, localStorageService) {
 
   // Playlist management
   this.queueVideo = function (id, title) {
-    var video = { id: id, title: title };
+    const video = { id: id, title: title };
     upcoming.push(video);
     localStorageService.set('upcoming', upcoming);
     return upcoming;
   };
 
   this.archiveVideo = function (id, title) {
-    var video = { id: id, title: title };
+    const video = { id: id, title: title };
     history.unshift(video);
     if (history.length > 50) { // Limit history to 50 items
       history = history.slice(0, 50);
@@ -260,7 +258,7 @@ function ($window, $rootScope, $log, $timeout, $http, localStorageService) {
   };
 
   this.deleteVideo = function (list, id) {
-    for (var i = list.length - 1; i >= 0; i--) {
+    for (let i = list.length - 1; i >= 0; i--) {
       if (list[i].id === id) {
         list.splice(i, 1);
         break;
@@ -329,12 +327,12 @@ app.controller('VideosController', function ($scope, $log, $timeout, YouTubeServ
   };
 
   $scope.delete = function (listName, id) {
-    var list = listName === 'upcoming' ? $scope.upcoming : $scope.history;
+    const list = listName === 'upcoming' ? $scope.upcoming : $scope.history;
     YouTubeService.deleteVideo(list, id);
   };
 
   $scope.search = function () {
-    if ($scope.query && $scope.query.trim()) {
+    if ($scope.query?.trim()) {
       $log.info('Searching for: ' + $scope.query);
       YouTubeService.searchVideos($scope.query.trim(), function(results) {
         $log.info('Search completed. Found ' + results.length + ' results');
