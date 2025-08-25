@@ -55,7 +55,11 @@ function ($window, $rootScope, $log, $timeout, $http, localStorageService) {
     $log.info('YouTube Iframe API is ready');
     youtube.ready = true;
     service.createPlayer();
-    $rootScope.$apply();
+    
+    // Solo aplicar si no hay un ciclo de digest en progreso
+    if (!$rootScope.$$phase) {
+      $rootScope.$apply();
+    }
   };
 
   // YouTube player event handlers
@@ -65,7 +69,11 @@ function ($window, $rootScope, $log, $timeout, $http, localStorageService) {
       youtube.player.cueVideoById(history[0].id);
       youtube.videoId = history[0].id;
       youtube.videoTitle = history[0].title;
-      $rootScope.$apply();
+      
+      // Solo aplicar si no hay un ciclo de digest en progreso
+      if (!$rootScope.$$phase) {
+        $rootScope.$apply();
+      }
     }
   }
 
@@ -87,7 +95,11 @@ function ($window, $rootScope, $log, $timeout, $http, localStorageService) {
       default:
         youtube.state = 'stopped';
     }
-    $rootScope.$apply();
+    
+    // Solo aplicar si no hay un ciclo de digest en progreso
+    if (!$rootScope.$$phase) {
+      $rootScope.$apply();
+    }
   }
 
   // Create YouTube player
@@ -121,7 +133,11 @@ function ($window, $rootScope, $log, $timeout, $http, localStorageService) {
     youtube.videoId = id;
     youtube.videoTitle = title;
     youtube.state = 'playing';
-    $rootScope.$apply();
+    
+    // Solo aplicar si no hay un ciclo de digest en progreso
+    if (!$rootScope.$$phase) {
+      $rootScope.$apply();
+    }
   };
 
   // Control functions
