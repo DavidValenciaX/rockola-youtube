@@ -18,13 +18,7 @@ const YOUTUBE_CONSTANTS = {
   BASE_URL: 'https://www.youtube.com',
   WATCH_URL: 'https://www.youtube.com/watch?v=',
   EMBED_URL: 'https://www.youtube.com/embed/',
-  SEARCH_ENDPOINT: 'https://www.googleapis.com/youtube/v3/search',
-  // Free API alternative - using Invidious instances
-  INVIDIOUS_INSTANCES: [
-    'https://invidious.projectsegfau.lt',
-    'https://invidious.privacydev.net',
-    'https://invidious.dhusch.de'
-  ]
+  SEARCH_ENDPOINT: '/api/search' // Endpoint local del servidor
 };
 
 // Service
@@ -159,16 +153,15 @@ function ($window, $rootScope, $log, $timeout, $http, localStorageService) {
     }
   };
 
-  // Search videos using Invidious API (free alternative)
+  // Search videos using our proxy to YouTube web
   this.searchVideos = function(query, callback) {
     if (!query) return;
 
-    const searchUrl = YOUTUBE_CONSTANTS.INVIDIOUS_INSTANCES[0] + '/api/v1/search';
+    const proxyUrl = YOUTUBE_CONSTANTS.SEARCH_ENDPOINT;
     
-    $http.get(searchUrl, {
+    $http.get(proxyUrl, {
       params: {
         q: query,
-        type: 'video',
         max_results: 10
       }
     }).then(function(response) {
@@ -188,55 +181,18 @@ function ($window, $rootScope, $log, $timeout, $http, localStorageService) {
       Array.prototype.push.apply(searchResults, results);
       
       if (callback) callback(results);
-      $rootScope.$apply();
+      if (!$rootScope.$$phase) $rootScope.$apply();
       
     }, function(error) {
       $log.error('Search error:', error);
-      // Fallback to next Invidious instance or show error
-      service.tryNextInvidiousInstance(query, callback, 1);
+      if (callback) callback([]);
     });
   };
 
-  // Try next Invidious instance if current one fails
+  // Método obsoleto - mantenido para compatibilidad
   this.tryNextInvidiousInstance = function(query, callback, instanceIndex) {
-    if (instanceIndex >= YOUTUBE_CONSTANTS.INVIDIOUS_INSTANCES.length) {
-      $log.error('All Invidious instances failed');
-      if (callback) callback([]);
-      return;
-    }
-
-    const searchUrl = YOUTUBE_CONSTANTS.INVIDIOUS_INSTANCES[instanceIndex] + '/api/v1/search';
-    
-    $http.get(searchUrl, {
-      params: {
-        q: query,
-        type: 'video',
-        max_results: 10
-      }
-    }).then(function(response) {
-      const results = response.data.map(function(item) {
-        return {
-          id: item.videoId,
-          title: item.title,
-          author: item.author,
-          thumbnail: item.videoThumbnails?.[0]?.url || 
-                    'https://i.ytimg.com/vi/' + item.videoId + '/default.jpg',
-          description: item.description || '',
-          duration: item.lengthSeconds
-        };
-      });
-      
-      searchResults.length = 0;
-      Array.prototype.push.apply(searchResults, results);
-      
-      if (callback) callback(results);
-      $rootScope.$apply();
-      
-    }, function(error) {
-      $log.error('Search error with instance ' + instanceIndex + ':', error);
-      // Try next instance
-      service.tryNextInvidiousInstance(query, callback, instanceIndex + 1);
-    });
+    $log.warn('tryNextInvidiousInstance está obsoleto - usando proxy del servidor');
+    this.searchVideos(query, callback);
   };
 
   // Playlist management
