@@ -253,10 +253,13 @@ app.controller('VideosController', function ($scope, $log, $timeout, YouTubeServ
     }, 500);
   }
 
-  $scope.launch = function (id, title) {
-    YouTubeService.playVideo(id, title);
-    YouTubeService.deleteVideo($scope.upcoming, id);
-    $log.info('Launched: ' + title);
+  // Función launch eliminada - Las canciones se reproducen solo en orden usando playNext()
+
+  $scope.startPlaylist = function() {
+    if ($scope.upcoming.length > 0 && !$scope.youtube.videoId) {
+      YouTubeService.playNext();
+      $log.info('Started playlist from beginning');
+    }
   };
 
   $scope.queue = function (id, title) {
@@ -285,8 +288,13 @@ app.controller('VideosController', function ($scope, $log, $timeout, YouTubeServ
   $scope.togglePlay = function() {
     if ($scope.youtube.state === 'playing') {
       YouTubeService.pause();
-    } else {
+    } else if ($scope.youtube.videoId) {
+      // Si hay un video cargado, continuar reproducción
       YouTubeService.play();
+    } else if ($scope.upcoming.length > 0) {
+      // Si no hay video pero hay canciones en la playlist, iniciar desde el principio
+      YouTubeService.playNext();
+      $log.info('Started playlist from beginning');
     }
   };
 
