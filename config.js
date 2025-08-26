@@ -1,5 +1,5 @@
 /**
- * Configuración de JukeTube
+ * Configuración de Rockola de YouTube
  * Centraliza todas las constantes y configuraciones de la aplicación
  */
 
@@ -74,8 +74,8 @@
     
     // Configuración de almacenamiento local
     STORAGE_KEYS: {
-      PLAYLIST: 'juketube_playlist',
-      SETTINGS: 'juketube_settings'
+      PLAYLIST: 'rockola_youtube_playlist',
+      SETTINGS: 'rockola_youtube_settings'
     },
     
     // Configuración de la interfaz
@@ -127,6 +127,6 @@
     return false;
   };
 
-  console.log('JukeTube Config: Configuración cargada');
+  console.log('Rockola de YouTube Config: Configuración cargada');
 
 })();

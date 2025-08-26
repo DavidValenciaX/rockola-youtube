@@ -1,5 +1,5 @@
 /**
- * Servidor HTTP para JukeTube
+ * Servidor HTTP para Rockola de YouTube
  * Sirve archivos estáticos y habilita CORS para evitar problemas con APIs externas
  */
 
@@ -7,7 +7,6 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const axios = require('axios');
-const cheerio = require('cheerio');
 
 // Constantes de configuración del servidor
 const SERVER_CONFIG = {
@@ -145,7 +144,7 @@ app.use((req, res) => {
 
 // Iniciar servidor
 app.listen(SERVER_CONFIG.PORT, SERVER_CONFIG.HOST, () => {
-  console.log(`🎵 JukeTube servidor iniciado!`);
+  console.log(`🎵 Rockola de YouTube servidor iniciado!`);
   console.log(`📍 URL: http://${SERVER_CONFIG.HOST}:${SERVER_CONFIG.PORT}`);
   console.log(`📂 Sirviendo archivos desde: ${SERVER_CONFIG.STATIC_PATH}`);
   console.log(`🔗 CORS habilitado para APIs externas`);
@@ -155,11 +154,11 @@ app.listen(SERVER_CONFIG.PORT, SERVER_CONFIG.HOST, () => {
 
 // Manejo de cierre elegante del servidor
 process.on('SIGINT', () => {
-  console.log('\n🛑 Cerrando servidor JukeTube...');
+  console.log('\n🛑 Cerrando servidor Rockola de YouTube...');
   process.exit(0);
 });
 
 process.on('SIGTERM', () => {
-  console.log('\n🛑 Cerrando servidor JukeTube...');
+  console.log('\n🛑 Cerrando servidor Rockola de YouTube...');
   process.exit(0);
 });

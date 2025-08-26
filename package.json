@@ -1,7 +1,7 @@
 {
-  "name": "juketube",
+  "name": "rockola-youtube",
   "version": "1.0.0",
-  "description": "YouTube Web Interface - Reproductor de música con interfaz web",
+  "description": "Rockola de YouTube - Reproductor de música con interfaz web",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

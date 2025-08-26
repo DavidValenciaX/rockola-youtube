@@ -1,6 +1,6 @@
 /**
  * Angular Local Storage Module
- * Simplified version for JukeTube
+ * Simplified version for Rockola de YouTube
  */
 
 (function() {

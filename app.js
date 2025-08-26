@@ -1,4 +1,4 @@
-const app = angular.module('JukeTubeApp', ['LocalStorageModule']);
+const app = angular.module('RocolaYouTubeApp', ['LocalStorageModule']);
 
 // Config
 app.config(function ($httpProvider) {

@@ -1,4 +1,4 @@
-# JukeTube - YouTube Web Interface
+# Rockola de YouTube - Interfaz Web de YouTube
 
 Una aplicación de música que utiliza la interfaz web oficial de YouTube para reproducir videos, similar a YouTube Music Desktop.
 
@@ -44,7 +44,7 @@ Esta aplicación utiliza una **estrategia híbrida** que combina lo mejor de amb
 ## 📁 Estructura del Proyecto
 
 ```bash
-juketube/
+rockola-youtube/
 ├── index.html              # Página principal
 ├── app.js                  # Lógica de la aplicación AngularJS
 ├── youtube-iframe-handler.js # Manejador del iframe de YouTube
@@ -86,8 +86,8 @@ juketube/
 1. **Clona el repositorio**:
 
    ```bash
-   git clone https://github.com/tu-usuario/juketube.git
-   cd juketube
+   git clone https://github.com/tu-usuario/rockola-youtube.git
+   cd rockola-youtube
    ```
 
 2. **Instala las dependencias**:
