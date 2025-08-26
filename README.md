@@ -86,7 +86,7 @@ rockola-youtube/
 1. **Clona el repositorio**:
 
    ```bash
-   git clone https://github.com/tu-usuario/rockola-youtube.git
+   git clone https://github.com/DavidValenciaX/rockola-youtube.git
    cd rockola-youtube
    ```
 
