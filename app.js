@@ -101,22 +101,36 @@ function ($window, $rootScope, $log, $timeout, $http, localStorageService) {
   }
 
   function onPlayerStateChange(event) {
+    const previousState = youtube.state;
+    
     switch (event.data) {
       case YT.PlayerState.PLAYING:
         youtube.state = 'playing';
+        $log.info('Video reproduciéndose');
         break;
       case YT.PlayerState.PAUSED:
         youtube.state = 'paused';
+        $log.info('Video pausado');
         break;
       case YT.PlayerState.ENDED:
         youtube.state = 'ended';
+        $log.info('🎬 Video terminado - Reproduciendo siguiente...');
+        // Limpiar video actual del localStorage cuando termina
+        localStorageService.remove(STORAGE_KEYS.CURRENT_VIDEO);
         service.playNext();
         break;
       case YT.PlayerState.BUFFERING:
         youtube.state = 'buffering';
+        $log.info('Video cargando...');
         break;
       default:
         youtube.state = 'stopped';
+        $log.info('Reproductor detenido');
+    }
+    
+    // Log de cambio de estado si es significativo
+    if (previousState !== youtube.state) {
+      $log.info(`Estado del reproductor: ${previousState} → ${youtube.state}`);
     }
     
     // Solo aplicar si no hay un ciclo de digest en progreso
@@ -194,10 +208,46 @@ function ($window, $rootScope, $log, $timeout, $http, localStorageService) {
       const nextVideo = upcoming.shift();
       this.playVideo(nextVideo.id, nextVideo.title);
       localStorageService.set(STORAGE_KEYS.UPCOMING, upcoming);
+    } else {
+      // Si no hay más videos en la cola, limpiar el estado del reproductor
+      youtube.videoId = null;
+      youtube.videoTitle = null;
+      youtube.state = 'stopped';
+      localStorageService.remove(STORAGE_KEYS.CURRENT_VIDEO);
+      $log.info('No more videos in queue - player stopped');
+      
+      if (!$rootScope.$$phase) {
+        $rootScope.$apply();
+      }
     }
   };
 
+  // Verificar si el video actual ha terminado
+  this.isVideoEnded = function() {
+    return youtube.state === 'ended';
+  };
 
+  // Obtener información del progreso del video
+  this.getVideoProgress = function() {
+    if (!youtube.player) return null;
+    
+    try {
+      const currentTime = youtube.player.getCurrentTime() || 0;
+      const duration = youtube.player.getDuration() || 0;
+      const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
+      
+      return {
+        currentTime: currentTime,
+        duration: duration,
+        progress: progress,
+        isEnded: youtube.state === 'ended',
+        timeRemaining: Math.max(0, duration - currentTime)
+      };
+    } catch (e) {
+      $log.warn('Error al obtener progreso del video:', e);
+      return null;
+    }
+  };
 
   // Search videos using our proxy to YouTube web
   this.searchVideos = function(query, callback) {
@@ -330,11 +380,15 @@ app.controller('VideosController', function ($scope, $log, $timeout, YouTubeServ
     }
   };
 
-  // Selección de resultado de búsqueda: reproducir de inmediato si no hay actual ni cola
+  // Selección de resultado de búsqueda: reproducir de inmediato si no hay actual activo ni cola
   $scope.selectSearchResult = function(video) {
-    const hasCurrent = !!$scope.youtube.videoId;
+    const isReadyForNewVideo = $scope.isReadyForNewVideo();
     const hasQueue = ($scope.upcoming && $scope.upcoming.length > 0);
-    if (!hasCurrent && !hasQueue) {
+    
+    // Reproducir inmediatamente si:
+    // 1. El reproductor está listo para un nuevo video (no hay video activo o terminó)
+    // 2. No hay cola de reproducción
+    if (isReadyForNewVideo && !hasQueue) {
       YouTubeService.playVideo(video.id, video.title);
       $log.info('Playing now: ' + video.title);
     } else {
@@ -349,11 +403,11 @@ app.controller('VideosController', function ($scope, $log, $timeout, YouTubeServ
   $scope.togglePlay = function() {
     if ($scope.youtube.state === 'playing') {
       YouTubeService.pause();
-    } else if ($scope.youtube.videoId) {
-      // Si hay un video cargado, continuar reproducción
+    } else if ($scope.youtube.videoId && $scope.youtube.state !== 'ended') {
+      // Si hay un video cargado y no ha terminado, continuar reproducción
       YouTubeService.play();
     } else if ($scope.upcoming.length > 0) {
-      // Si no hay video pero hay canciones en la playlist, iniciar desde el principio
+      // Si no hay video activo pero hay canciones en la playlist, iniciar desde el principio
       YouTubeService.playNext();
       $log.info('Started playlist from beginning');
     }
@@ -365,5 +419,54 @@ app.controller('VideosController', function ($scope, $log, $timeout, YouTubeServ
 
   $scope.nextVideo = function() {
     YouTubeService.playNext();
+  };
+
+  // Funciones para verificar estado del video
+  $scope.isVideoEnded = function() {
+    return YouTubeService.isVideoEnded();
+  };
+
+  $scope.getVideoProgress = function() {
+    return YouTubeService.getVideoProgress();
+  };
+
+  // Función para formatear tiempo en formato MM:SS
+  $scope.formatTime = function(seconds) {
+    if (!seconds || seconds < 0) return '0:00';
+    
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
+
+  // Función para verificar si hay video actual activo (no terminado)
+  $scope.hasCurrentVideo = function() {
+    return !!$scope.youtube.videoId && $scope.youtube.state !== 'ended';
+  };
+
+  // Función para verificar si hay video actual (incluyendo terminados)
+  $scope.hasAnyCurrentVideo = function() {
+    return !!$scope.youtube.videoId;
+  };
+
+  // Función para verificar si el reproductor está listo para reproducir un nuevo video
+  $scope.isReadyForNewVideo = function() {
+    return !$scope.youtube.videoId || $scope.youtube.state === 'ended';
+  };
+
+  // Función para obtener información del video actual
+  $scope.getCurrentVideoInfo = function() {
+    const progress = $scope.getVideoProgress();
+    if (!progress) return null;
+    
+    return {
+      title: $scope.youtube.videoTitle,
+      state: $scope.youtube.state,
+      isEnded: progress.isEnded,
+      currentTime: $scope.formatTime(progress.currentTime),
+      duration: $scope.formatTime(progress.duration),
+      progress: Math.round(progress.progress),
+      timeRemaining: $scope.formatTime(progress.timeRemaining)
+    };
   };
 });
