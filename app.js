@@ -45,6 +45,7 @@ function ($window, $rootScope, $log, $timeout, $http, localStorageService) {
 
   let searchResults = [];
   let upcoming = localStorageService.get(STORAGE_KEYS.UPCOMING) || [];
+  let pendingPlay = null;
 
 
 
@@ -63,6 +64,25 @@ function ($window, $rootScope, $log, $timeout, $http, localStorageService) {
   // YouTube player event handlers
   function onPlayerReady(event) {
     $log.info('YouTube Player is ready');
+    // Si hay una reproducción pendiente, darle prioridad
+    if (pendingPlay?.id) {
+      try {
+        youtube.player.loadVideoById(pendingPlay.id);
+        youtube.videoId = pendingPlay.id;
+        youtube.videoTitle = pendingPlay.title;
+        youtube.state = 'playing';
+        localStorageService.set(STORAGE_KEYS.CURRENT_VIDEO, { id: pendingPlay.id, title: pendingPlay.title });
+      } catch (e) {
+        $log.warn('No se pudo iniciar la reproducción pendiente:', e);
+      } finally {
+        pendingPlay = null;
+      }
+      if (!$rootScope.$$phase) {
+        $rootScope.$apply();
+      }
+      return;
+    }
+
     // Restaurar el video actual si existe
     const current = localStorageService.get(STORAGE_KEYS.CURRENT_VIDEO);
     if (current?.id) {
@@ -130,7 +150,18 @@ function ($window, $rootScope, $log, $timeout, $http, localStorageService) {
 
   // Play specific video
   this.playVideo = function (id, title) {
-    if (!youtube.player) return;
+    if (!youtube.player) {
+      // Aplazar reproducción hasta que el reproductor esté listo
+      pendingPlay = { id: id, title: title };
+      youtube.videoId = id;
+      youtube.videoTitle = title;
+      youtube.state = 'loading';
+      localStorageService.set(STORAGE_KEYS.CURRENT_VIDEO, { id: id, title: title });
+      if (!$rootScope.$$phase) {
+        $rootScope.$apply();
+      }
+      return;
+    }
     
     youtube.player.loadVideoById(id);
     youtube.videoId = id;
@@ -296,6 +327,19 @@ app.controller('VideosController', function ($scope, $log, $timeout, YouTubeServ
       YouTubeService.searchVideos($scope.query.trim(), function(results) {
         $log.info('Search completed. Found ' + results.length + ' results');
       });
+    }
+  };
+
+  // Selección de resultado de búsqueda: reproducir de inmediato si no hay actual ni cola
+  $scope.selectSearchResult = function(video) {
+    const hasCurrent = !!$scope.youtube.videoId;
+    const hasQueue = ($scope.upcoming && $scope.upcoming.length > 0);
+    if (!hasCurrent && !hasQueue) {
+      YouTubeService.playVideo(video.id, video.title);
+      $log.info('Playing now: ' + video.title);
+    } else {
+      YouTubeService.queueVideo(video.id, video.title);
+      $log.info('Queued: ' + video.title);
     }
   };
 
