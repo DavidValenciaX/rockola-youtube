@@ -46,7 +46,7 @@
           <ol id="upcoming">
             <li data-ng-repeat="video in upcoming">
               <span class="item-number">{{$index + 1}}</span>
-              <p class="item-title" data-ng-class="$index == 0 ? 'next-to-play' : ''">
+              <p class="item-title" data-ng-class="getItemClass($index)">
                 {{video.title}}
               </p>
               <p class="item-delete" data-ng-click="delete('upcoming', video.id)">delete</p>

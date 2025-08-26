@@ -469,4 +469,9 @@ app.controller('VideosController', function ($scope, $log, $timeout, YouTubeServ
       timeRemaining: $scope.formatTime(progress.timeRemaining)
     };
   };
+
+  // Función helper para determinar la clase CSS del próximo video a reproducir
+  $scope.getItemClass = function(index) {
+    return index == 0 ? 'next-to-play' : '';
+  };
 });
