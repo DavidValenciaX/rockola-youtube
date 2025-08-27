@@ -6,7 +6,7 @@
   }
 
   function getItemClass(index) {
-    return playlistActions.getItemClass(index);
+    return ''; // Removed special styling for next-to-play
   }
 
   function playVideoFromPlaylist(videoId) {
@@ -208,26 +208,7 @@
     background: rgba(0, 255, 255, 0.15);
   }
 
-  .item-title.next-to-play {
-    font-weight: 700;
-    color: var(--jukebox-darker);
-    text-shadow: 0 0 5px var(--jukebox-accent);
-    position: relative;
-  }
-
-  .item-title.next-to-play::before {
-    content: "▶️ ";
-    margin-right: 8px;
-    filter: drop-shadow(0 0 5px var(--jukebox-accent));
-  }
-
-  .playlist-item:has(.next-to-play) .item-number {
-    background: var(--jukebox-accent);
-    animation: jukeboxPulse 1.5s infinite;
-    box-shadow: 0 0 20px var(--jukebox-accent),
-                0 0 30px var(--jukebox-accent),
-                0 2px 4px rgba(0,0,0,0.3);
-  }
+  /* Removed next-to-play styling to avoid confusion with currently playing video */
 
   /* Delete Button - Jukebox Style */
   .item-delete {

@@ -507,13 +507,7 @@ nav{ display: none; } /* Navigation moved to components */
   border: 2px solid var(--jukebox-chrome);
 }
 
-.next-to-play .item-number {
-  background: var(--jukebox-accent);
-  animation: jukeboxPulse 1.5s infinite;
-  box-shadow: 0 0 20px var(--jukebox-accent),
-              0 0 30px var(--jukebox-accent),
-              0 2px 4px rgba(0,0,0,0.3);
-}
+/* Removed next-to-play styling to avoid confusion with currently playing video */
 
 .item-title{ 
   flex: 1;
@@ -526,11 +520,7 @@ nav{ display: none; } /* Navigation moved to components */
   line-height: 1.3;
 }
 
-.item-title.next-to-play{
-  color: var(--jukebox-darker);
-  font-weight: bold;
-  text-shadow: 0 0 5px var(--jukebox-accent);
-}
+/* Removed next-to-play styling to avoid confusion with currently playing video */
 
 /* Delete Button - Jukebox Style */
 .item-delete{ 

@@ -125,9 +125,7 @@ export const playlistActions = {
     }
   },
 
-  getItemClass(index) {
-    return index === 0 ? 'next-to-play' : '';
-  },
+  // Removed getItemClass method to eliminate special styling for next-to-play item
 
   // Method to get current upcoming list (for YouTube service to access)
   getUpcoming() {
