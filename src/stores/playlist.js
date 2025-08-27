@@ -8,7 +8,28 @@ export const upcoming = writable([]);
 
 // Initialize playlist from localStorage
 const initialUpcoming = storageService.getItem(STORAGE_KEYS.UPCOMING) || [];
-upcoming.set(initialUpcoming);
+
+// Clean up any duplicates that might exist in localStorage
+const cleanedUpcoming = [];
+const seenIds = new Set();
+for (const video of initialUpcoming) {
+  if (!seenIds.has(video.id)) {
+    seenIds.add(video.id);
+    // Add timestamp if missing for better key uniqueness
+    cleanedUpcoming.push({
+      ...video,
+      timestamp: video.timestamp || Date.now() + Math.random()
+    });
+  }
+}
+
+// Update localStorage if we removed duplicates
+if (cleanedUpcoming.length !== initialUpcoming.length) {
+  console.log(`Cleaned up ${initialUpcoming.length - cleanedUpcoming.length} duplicate videos from playlist`);
+  storageService.setItem(STORAGE_KEYS.UPCOMING, cleanedUpcoming);
+}
+
+upcoming.set(cleanedUpcoming);
 
 // Derived stores for playlist information
 export const hasUpcomingVideos = derived(
@@ -34,8 +55,15 @@ upcoming.subscribe(upcomingList => {
 // Playlist actions
 export const playlistActions = {
   addVideo(id, title) {
-    const video = { id, title };
+    const video = { id, title, timestamp: Date.now() };
     upcoming.update(currentList => {
+      // Check for duplicates to prevent key conflicts
+      const existsAlready = currentList.some(existingVideo => existingVideo.id === id);
+      if (existsAlready) {
+        console.log('Video already in queue:', title);
+        return currentList;
+      }
+      
       const newList = [...currentList, video];
       console.log('Queued:', title);
       return newList;

@@ -15,7 +15,7 @@
   
   {#if $hasUpcomingVideos}
     <ol id="upcoming">
-      {#each $upcoming as video, index (video.id)}
+      {#each $upcoming as video, index (video.id + '_' + (video.timestamp || index))}
         <li class="playlist-item">
           <span class="item-number">{index + 1}</span>
           <p class="item-title {getItemClass(index)}">

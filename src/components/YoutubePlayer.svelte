@@ -5,8 +5,21 @@
   let playerContainer;
 
   onMount(() => {
-    // The YouTube service will automatically find and initialize the player
-    // when the DOM element with id 'youtube-player' is available
+    // Ensure the player element is available before initializing
+    // Add a small delay to ensure DOM is fully ready
+    const initializePlayer = () => {
+      const playerElement = document.getElementById('youtube-player');
+      if (playerElement) {
+        // The YouTube service will automatically find and initialize the player
+        console.log('YouTube player element found and ready for initialization');
+      } else {
+        // Retry after a short delay if element not found
+        setTimeout(initializePlayer, 50);
+      }
+    };
+    
+    // Start initialization after a brief delay to ensure DOM is ready
+    setTimeout(initializePlayer, 100);
   });
 
   onDestroy(() => {

@@ -18,7 +18,7 @@ const SERVER_CONFIG = {
   PORT: process.env.PORT || 3000,
   HOST: process.env.HOST || 'localhost',
   STATIC_PATH: process.env.NODE_ENV === 'production' ? path.join(__dirname, 'dist') : __dirname,
-  INDEX_FILE: process.env.NODE_ENV === 'production' ? 'index.html' : 'index-svelte.html',
+  INDEX_FILE: 'index.html',
   YOUTUBE: {
     BASE_URL: 'https://www.youtube.com',
     SEARCH_URL: 'https://www.youtube.com/results',

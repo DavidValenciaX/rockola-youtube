@@ -13,6 +13,7 @@ export class YouTubeService {
     this.ready = false;
     this.apiLoaded = false;
     this.pendingPlay = null;
+    this.createPlayerRetries = 0;
     
     // Player state
     this.state = {
@@ -65,11 +66,18 @@ export class YouTubeService {
     
     const playerElement = document.getElementById('youtube-player');
     if (!playerElement) {
-      console.warn('YouTube player element not found, retrying...');
-      setTimeout(() => this.createPlayer(), 100);
+      // Only retry a few times to avoid spam
+      if (!this.createPlayerRetries) this.createPlayerRetries = 0;
+      if (this.createPlayerRetries < 20) { // Max 20 retries (2 seconds)
+        this.createPlayerRetries++;
+        setTimeout(() => this.createPlayer(), 100);
+      } else {
+        console.error('YouTube player element not found after multiple retries');
+      }
       return;
     }
 
+    console.log('Creating YouTube player...');
     this.player = new YT.Player('youtube-player', {
       height: '100%',
       width: '100%',
