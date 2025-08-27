@@ -121,10 +121,15 @@
   #search-results {
     padding: 20px;
     background: var(--dark-gradient);
-    flex: 1;
+    /* Use calculated height instead of flex: 1 to prevent recalculation loops */
+    height: calc(100% - 400px); /* Subtract YouTube player height */
     overflow-y: auto;
     border-top: 2px solid var(--jukebox-chrome);
     position: relative;
+    /* Ensure stable overflow behavior */
+    overflow-x: hidden;
+    /* Force hardware acceleration for smoother scrolling */
+    will-change: scroll-position;
   }
 
   #search-results::before {
