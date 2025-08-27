@@ -1,7 +1,7 @@
 import { writable, derived } from 'svelte/store';
 import { youtubeService } from './youtube.js';
 import { storageService } from '../services/storageService.js';
-import { STORAGE_KEYS } from '../services/youtubeService.js';
+import { STORAGE_KEYS, setPlaylistActions } from '../services/youtubeService.js';
 
 // Playlist state store
 export const upcoming = writable([]);
@@ -97,9 +97,14 @@ export const playlistActions = {
     upcoming.update(currentList => {
       if (currentList.length > 0) {
         const nextVideo = currentList[0];
-        youtubeService.playVideo(nextVideo.id, nextVideo.title);
+        // Get the YouTube service instance and play the video
+        const ytService = youtubeService;
+        ytService.playVideo(nextVideo.id, nextVideo.title);
+        
+        console.log('Playing next video:', nextVideo.title);
         return currentList.slice(1); // Remove first item
       }
+      console.log('No videos in queue to play next');
       return currentList;
     });
   },
@@ -114,5 +119,13 @@ export const playlistActions = {
 
   getItemClass(index) {
     return index === 0 ? 'next-to-play' : '';
+  },
+
+  // Method to get current upcoming list (for YouTube service to access)
+  getUpcoming() {
+    return storageService.getItem(STORAGE_KEYS.UPCOMING) || [];
   }
 };
+
+// Set up the playlist actions reference in the YouTube service
+setPlaylistActions(playlistActions);

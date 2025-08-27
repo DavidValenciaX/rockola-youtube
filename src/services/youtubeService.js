@@ -6,6 +6,14 @@ export const STORAGE_KEYS = {
   CURRENT_VIDEO: 'current_video'
 };
 
+// Import playlist actions - will be set by the store initialization
+let playlistStoreActions = null;
+
+// Function to set playlist actions reference
+export function setPlaylistActions(actions) {
+  playlistStoreActions = actions;
+}
+
 // YouTube service to handle player functionality
 export class YouTubeService {
   constructor() {
@@ -237,42 +245,69 @@ export class YouTubeService {
   }
 
   playNext() {
-    const upcoming = storageService.getItem(STORAGE_KEYS.UPCOMING) || [];
-    
-    if (upcoming.length > 0) {
-      const nextVideo = upcoming.shift();
-      this.playVideo(nextVideo.id, nextVideo.title);
-      storageService.setItem(STORAGE_KEYS.UPCOMING, upcoming);
+    // Use playlist store actions if available, otherwise fall back to direct storage access
+    if (playlistStoreActions) {
+      playlistStoreActions.playNext();
     } else {
-      // If no more videos in queue, clear player state
-      this.state.videoId = null;
-      this.state.videoTitle = null;
-      this.state.playerState = 'stopped';
-      storageService.removeItem(STORAGE_KEYS.CURRENT_VIDEO);
-      console.log('No more videos in queue - player stopped');
+      // Fallback to direct storage manipulation
+      const upcoming = storageService.getItem(STORAGE_KEYS.UPCOMING) || [];
       
-      this.notifyStateChange();
+      if (upcoming.length > 0) {
+        const nextVideo = upcoming.shift();
+        this.playVideo(nextVideo.id, nextVideo.title);
+        storageService.setItem(STORAGE_KEYS.UPCOMING, upcoming);
+      } else {
+        // If no more videos in queue, clear player state
+        this.state.videoId = null;
+        this.state.videoTitle = null;
+        this.state.playerState = 'stopped';
+        storageService.removeItem(STORAGE_KEYS.CURRENT_VIDEO);
+        console.log('No more videos in queue - player stopped');
+        
+        this.notifyStateChange();
+      }
     }
   }
 
   // Playlist management
   queueVideo(id, title) {
-    const upcoming = storageService.getItem(STORAGE_KEYS.UPCOMING) || [];
-    const video = { id, title };
-    upcoming.push(video);
-    storageService.setItem(STORAGE_KEYS.UPCOMING, upcoming);
-    return upcoming;
+    // Use playlist store actions if available, otherwise fall back to direct storage access
+    if (playlistStoreActions) {
+      return playlistStoreActions.addVideo(id, title);
+    } else {
+      // Fallback to direct storage manipulation
+      const upcoming = storageService.getItem(STORAGE_KEYS.UPCOMING) || [];
+      const video = { id, title };
+      upcoming.push(video);
+      storageService.setItem(STORAGE_KEYS.UPCOMING, upcoming);
+      return upcoming;
+    }
   }
 
   deleteVideo(id) {
-    const upcoming = storageService.getItem(STORAGE_KEYS.UPCOMING) || [];
-    const filteredUpcoming = upcoming.filter(video => video.id !== id);
-    storageService.setItem(STORAGE_KEYS.UPCOMING, filteredUpcoming);
-    return filteredUpcoming;
+    // Use playlist store actions if available, otherwise fall back to direct storage access
+    if (playlistStoreActions) {
+      playlistStoreActions.removeVideo(id);
+      return this.getUpcoming();
+    } else {
+      // Fallback to direct storage manipulation
+      const upcoming = storageService.getItem(STORAGE_KEYS.UPCOMING) || [];
+      const filteredUpcoming = upcoming.filter(video => video.id !== id);
+      storageService.setItem(STORAGE_KEYS.UPCOMING, filteredUpcoming);
+      return filteredUpcoming;
+    }
   }
 
   getUpcoming() {
     return storageService.getItem(STORAGE_KEYS.UPCOMING) || [];
+  }
+
+  // Method to get upcoming from playlist store if available
+  getUpcomingFromStore() {
+    if (playlistStoreActions && playlistStoreActions.getUpcoming) {
+      return playlistStoreActions.getUpcoming();
+    }
+    return this.getUpcoming();
   }
 
   // Utility methods
