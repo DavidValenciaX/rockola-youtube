@@ -56,6 +56,14 @@ upcoming.subscribe(upcomingList => {
 export const playlistActions = {
   addVideo(id, title) {
     const video = { id, title, timestamp: Date.now() };
+    
+    // Check if the video is currently playing
+    const currentState = youtubeService.getState();
+    if (currentState.videoId === id && currentState.playerState !== 'ended') {
+      console.log('Video is currently playing, cannot add to queue:', title);
+      return null; // Return null to indicate the video was not added
+    }
+    
     upcoming.update(currentList => {
       // Check for duplicates to prevent key conflicts
       const existsAlready = currentList.some(existingVideo => existingVideo.id === id);

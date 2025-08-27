@@ -1,9 +1,46 @@
 <script>
   import { searchResults, hasSearchResults, searchError } from '../stores/search.js';
-  import { youtubeActions, isReadyForNewVideo } from '../stores/youtube.js';
+  import { youtubeActions, isReadyForNewVideo, youtubeState, hasCurrentVideo } from '../stores/youtube.js';
   import { playlistActions, hasUpcomingVideos } from '../stores/playlist.js';
+  import Swal from 'sweetalert2';
+
+  function showNotification(message) {
+    Swal.fire({
+      title: '🎵 Rockola YouTube',
+      text: message,
+      icon: 'info',
+      timer: 3000,
+      timerProgressBar: true,
+      showConfirmButton: false,
+      toast: false,
+      position: 'center',
+      background: 'var(--jukebox-darker)',
+      color: 'var(--jukebox-secondary)',
+      customClass: {
+        popup: 'jukebox-alert',
+        title: 'jukebox-alert-title',
+        htmlContainer: 'jukebox-alert-text',
+        timerProgressBar: 'jukebox-alert-progress'
+      },
+      didOpen: () => {
+        // Apply custom styles after the modal opens
+        const popup = Swal.getPopup();
+        if (popup) {
+          popup.style.border = '3px solid var(--jukebox-chrome)';
+          popup.style.borderRadius = '20px';
+          popup.style.boxShadow = '0 0 30px rgba(0,255,255,0.4), 0 8px 32px rgba(0,0,0,0.6)';
+        }
+      }
+    });
+  }
 
   function selectSearchResult(video) {
+    // Check if the video is currently playing
+    if ($hasCurrentVideo && $youtubeState.videoId === video.id) {
+      showNotification('El video ya se está reproduciendo');
+      return;
+    }
+
     // Determine whether to play immediately or queue
     const readyForNewVideo = $isReadyForNewVideo;
     const hasQueue = $hasUpcomingVideos;
@@ -15,8 +52,13 @@
       youtubeActions.playVideo(video.id, video.title);
       console.log('Playing now:', video.title);
     } else {
-      playlistActions.addVideo(video.id, video.title);
-      console.log('Queued:', video.title);
+      const result = playlistActions.addVideo(video.id, video.title);
+      if (result === null) {
+        // Video couldn't be added because it's currently playing
+        showNotification('El video ya se está reproduciendo');
+      } else {
+        console.log('Queued:', video.title);
+      }
     }
   }
 
@@ -44,6 +86,8 @@
   </div>
 {/if}
 
+
+
 {#if $hasSearchResults}
   <div id="search-results">
     <h3>Resultados de Búsqueda</h3>
@@ -59,7 +103,9 @@
             {/if}
           </div>
           <div class="action-hint">
-            {#if $isReadyForNewVideo && !$hasUpcomingVideos}
+            {#if $hasCurrentVideo && $youtubeState.videoId === video.id}
+              <span class="playing-hint">🎵 Reproduciendo</span>
+            {:else if $isReadyForNewVideo && !$hasUpcomingVideos}
               <span class="play-hint">▶️ Clic para reproducir</span>
             {:else}
               <span class="queue-hint">➕ Clic para añadir</span>
@@ -119,6 +165,55 @@
     margin: 0;
     text-shadow: 0 0 5px var(--jukebox-primary);
     font-family: 'Orbitron', 'Montserrat', sans-serif;
+  }
+
+  /* SweetAlert2 Custom Jukebox Styling */
+  :global(.jukebox-alert) {
+    background: var(--jukebox-darker) !important;
+    border: 3px solid var(--jukebox-chrome) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 0 30px rgba(0,255,255,0.4), 0 8px 32px rgba(0,0,0,0.6) !important;
+    font-family: 'Orbitron', 'Montserrat', sans-serif !important;
+  }
+
+  :global(.jukebox-alert-title) {
+    color: var(--jukebox-accent) !important;
+    text-shadow: 0 0 10px var(--jukebox-accent) !important;
+    font-family: 'Orbitron', 'Montserrat', sans-serif !important;
+    font-weight: bold !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
+    margin-bottom: 20px !important;
+  }
+
+  :global(.jukebox-alert-text) {
+    color: var(--jukebox-secondary) !important;
+    text-shadow: 0 0 5px var(--jukebox-secondary) !important;
+    font-family: 'Orbitron', 'Montserrat', sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+  }
+
+  :global(.jukebox-alert-progress) {
+    background: var(--jukebox-secondary) !important;
+    height: 4px !important;
+    border-radius: 2px !important;
+    box-shadow: 0 0 10px var(--jukebox-secondary) !important;
+  }
+
+  :global(.jukebox-alert .swal2-icon.swal2-info) {
+    border-color: var(--jukebox-secondary) !important;
+    color: var(--jukebox-secondary) !important;
+  }
+
+  :global(.jukebox-alert .swal2-icon.swal2-info::before) {
+    content: '🎵' !important;
+    font-size: 24px !important;
+    color: var(--jukebox-secondary) !important;
+  }
+
+  :global(.jukebox-alert .swal2-icon-content) {
+    display: none !important;
   }
 
   .results-grid {
@@ -259,6 +354,12 @@
     text-shadow: 0 0 5px var(--jukebox-secondary);
   }
 
+  .playing-hint {
+    color: var(--jukebox-accent) !important;
+    text-shadow: 0 0 5px var(--jukebox-accent);
+    font-weight: bold;
+  }
+
   /* Custom scrollbar */
   #search-results::-webkit-scrollbar {
     width: 8px;
@@ -284,6 +385,13 @@
     0% { transform: translateX(-100%); opacity: 0; }
     50% { opacity: 1; }
     100% { transform: translateX(100%); opacity: 0; }
+  }
+
+  @keyframes fadeInOut {
+    0% { opacity: 0; transform: translateY(-10px); }
+    10% { opacity: 1; transform: translateY(0); }
+    90% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-10px); }
   }
 
   /* Responsive Design */
