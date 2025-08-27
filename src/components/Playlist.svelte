@@ -60,6 +60,9 @@
     position: relative;
     box-shadow: inset 0 0 15px rgba(0,255,255,0.05);
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
   }
 
   #playlist::before {
@@ -93,8 +96,9 @@
     list-style: none;
     padding: 15px;
     margin: 0;
-    max-height: 400px;
     overflow-y: auto;
+    flex: 1;
+    min-height: 0;
   }
 
   /* Jukebox Style Playlist Items */
@@ -259,6 +263,7 @@
     border-top: 1px solid var(--jukebox-chrome-dark);
     text-align: center;
     background: var(--jukebox-darker);
+    margin-top: auto;
   }
 
   .playlist-summary p {
