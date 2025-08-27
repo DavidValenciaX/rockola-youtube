@@ -24,7 +24,7 @@
           <button 
             class="item-delete" 
             on:click={() => deleteVideo(video.id)}
-            title="Remove from playlist"
+            title="Eliminar de la lista"
           >
             🗑️
           </button>
@@ -33,12 +33,12 @@
     </ol>
     
     <div class="playlist-summary">
-      <p>{$upcoming.length} video{$upcoming.length !== 1 ? 's' : ''} in queue</p>
+      <p>{$upcoming.length} video{$upcoming.length !== 1 ? 's' : ''} en cola</p>
     </div>
   {:else}
     <div class="empty-playlist">
-      <p>Your playlist is empty</p>
-      <p class="hint">Search for videos and click on them to add to your queue!</p>
+      <p>Tu lista de reproducción está vacía</p>
+      <p class="hint">¡Busca videos y haz clic en ellos para añadirlos a tu cola!</p>
     </div>
   {/if}
 </div>

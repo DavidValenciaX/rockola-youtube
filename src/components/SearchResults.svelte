@@ -23,13 +23,13 @@
 
 {#if $searchError}
   <div class="error-message">
-    <p>❌ Search Error: {$searchError}</p>
+    <p>❌ Error de Búsqueda: {$searchError}</p>
   </div>
 {/if}
 
 {#if $hasSearchResults}
   <div id="search-results">
-    <h3>Search Results</h3>
+    <h3>Resultados de Búsqueda</h3>
     <div class="results-grid">
       {#each $searchResults as video (video.id)}
         <div class="search-result" on:click={() => selectSearchResult(video)} on:keydown={(e) => e.key === 'Enter' && selectSearchResult(video)} role="button" tabindex="0">
@@ -43,9 +43,9 @@
           </div>
           <div class="action-hint">
             {#if $isReadyForNewVideo && !$hasUpcomingVideos}
-              <span class="play-hint">▶️ Click to play</span>
+              <span class="play-hint">▶️ Clic para reproducir</span>
             {:else}
-              <span class="queue-hint">➕ Click to queue</span>
+              <span class="queue-hint">➕ Clic para añadir</span>
             {/if}
           </div>
         </div>

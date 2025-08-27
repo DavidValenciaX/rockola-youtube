@@ -16,7 +16,7 @@
 </script>
 
 <div id="current-video-info">
-  <h3>Now Playing</h3>
+  <h3>Reproduciendo Ahora</h3>
   
   {#if $youtubeState.videoTitle}
     <div class="video-info">
@@ -37,45 +37,45 @@
       
       <div class="player-state">
         {#if $youtubeState.playerState === 'playing'}
-          <span class="state-indicator playing">▶️ Playing</span>
+          <span class="state-indicator playing">▶️ Reproduciendo</span>
         {:else if $youtubeState.playerState === 'paused'}
-          <span class="state-indicator paused">⏸️ Paused</span>
+          <span class="state-indicator paused">⏸️ Pausado</span>
         {:else if $youtubeState.playerState === 'buffering'}
-          <span class="state-indicator buffering">⏳ Buffering</span>
+          <span class="state-indicator buffering">⏳ Cargando</span>
         {:else if $youtubeState.playerState === 'ended'}
-          <span class="state-indicator ended">⏹️ Ended</span>
+          <span class="state-indicator ended">⏹️ Finalizado</span>
         {:else}
-          <span class="state-indicator stopped">⏹️ Stopped</span>
+          <span class="state-indicator stopped">⏹️ Detenido</span>
         {/if}
       </div>
       
       <div class="controls">
         <button class="control-btn" on:click={togglePlay}>
           {#if $isPlaying}
-            ⏸️ Pause
+            ⏸️ Pausar
           {:else if $hasCurrentVideo}
-            ▶️ Play
+            ▶️ Reproducir
           {:else if $hasUpcomingVideos}
-            ▶️ Start Playlist
+            ▶️ Iniciar Lista
           {:else}
-            ▶️ Play
+            ▶️ Reproducir
           {/if}
         </button>
         
         <button class="control-btn" on:click={nextVideo} disabled={!$hasUpcomingVideos}>
-          ⏭️ Next
+          ⏭️ Siguiente
         </button>
       </div>
     </div>
   {:else}
     <div class="no-video">
-      <p>No video playing</p>
+      <p>No hay video reproduciéndose</p>
       {#if $hasUpcomingVideos}
         <button class="control-btn start-btn" on:click={startPlaylist}>
-          ▶️ Start Playlist
+          ▶️ Iniciar Lista
         </button>
       {:else}
-        <p class="hint">Search for videos to get started!</p>
+        <p class="hint">¡Busca videos para comenzar!</p>
       {/if}
     </div>
   {/if}

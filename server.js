@@ -50,7 +50,7 @@ if (process.env.NODE_ENV === 'production') {
   app.get('*', (req, res) => {
     // Evitar que archivos de API se redirijan al index
     if (req.path.startsWith('/api/')) {
-      return res.status(404).json({ error: 'API endpoint not found' });
+      return res.status(404).json({ error: 'Endpoint de API no encontrado' });
     }
     res.sendFile(path.join(SERVER_CONFIG.STATIC_PATH, SERVER_CONFIG.INDEX_FILE));
   });

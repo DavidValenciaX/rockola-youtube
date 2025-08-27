@@ -33,15 +33,15 @@
   {#if !$youtubeState.ready}
     <div class="loading-overlay">
       <div class="loading-spinner"></div>
-      <p>Loading YouTube Player...</p>
+      <p>Cargando Reproductor de YouTube...</p>
     </div>
   {/if}
   
   {#if $youtubeState.ready && !$youtubeState.videoId}
     <div class="no-video-overlay">
       <div class="no-video-message">
-        <h3>🎵 Welcome to Rockola YouTube</h3>
-        <p>Search for videos above or start your playlist to begin!</p>
+        <h3>🎵 Bienvenido a Rockola YouTube</h3>
+        <p>¡Busca videos arriba o inicia tu lista de reproducción para comenzar!</p>
       </div>
     </div>
   {/if}
