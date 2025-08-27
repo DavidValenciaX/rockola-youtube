@@ -153,7 +153,8 @@ function ($window, $rootScope, $log, $timeout, $http, localStorageService) {
         fs: 1,
         cc_load_policy: 0,
         iv_load_policy: 3,
-        autohide: 0
+        autohide: 0,
+        controls: 0
       },
       events: {
         'onReady': onPlayerReady,
