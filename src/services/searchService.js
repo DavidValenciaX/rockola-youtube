@@ -28,7 +28,7 @@ export const searchService = {
         thumbnail: item.videoThumbnails?.[0]?.url || 
                   `https://i.ytimg.com/vi/${item.videoId}/default.jpg`,
         description: item.description || '',
-        duration: item.lengthSeconds
+        duration: item.lengthSeconds // This is actually a formatted string like "3:45"
       }));
 
     } catch (error) {

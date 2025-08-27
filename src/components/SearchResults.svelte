@@ -19,6 +19,23 @@
       console.log('Queued:', video.title);
     }
   }
+
+  function formatDuration(duration) {
+    // If duration is already a formatted string (like "3:45"), return it
+    if (typeof duration === 'string' && duration.includes(':')) {
+      return duration;
+    }
+    
+    // If duration is a number (seconds), convert to minutes:seconds format
+    if (typeof duration === 'number' && !isNaN(duration)) {
+      const minutes = Math.floor(duration / 60);
+      const seconds = (duration % 60).toString().padStart(2, '0');
+      return `${minutes}:${seconds}`;
+    }
+    
+    // If duration is invalid or missing, return a default
+    return '0:00';
+  }
 </script>
 
 {#if $searchError}
@@ -38,7 +55,7 @@
             <p class="search-title">{video.title}</p>
             <p class="search-author">{video.author}</p>
             {#if video.duration}
-              <p class="search-duration">{Math.floor(video.duration / 60)}:{(video.duration % 60).toString().padStart(2, '0')}</p>
+              <p class="search-duration">{formatDuration(video.duration)}</p>
             {/if}
           </div>
           <div class="action-hint">
