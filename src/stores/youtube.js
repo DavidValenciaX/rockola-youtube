@@ -11,7 +11,8 @@ export const youtubeState = writable({
   videoTitle: null,
   playerState: 'stopped',
   currentTime: 0,
-  duration: 0
+  duration: 0,
+  controlsEnabled: true
 });
 
 // Progress store
@@ -32,7 +33,8 @@ youtubeService.onStateChange((state) => {
     videoTitle: state.videoTitle,
     playerState: state.playerState,
     currentTime: state.currentTime,
-    duration: state.duration
+    duration: state.duration,
+    controlsEnabled: state.controlsEnabled
   }));
 });
 
@@ -74,6 +76,12 @@ export const isReadyForNewVideo = derived(
   $youtubeState => !$youtubeState.videoId || $youtubeState.playerState === 'ended'
 );
 
+// Derived store for controls enabled
+export const controlsEnabled = derived(
+  youtubeState,
+  $youtubeState => $youtubeState.controlsEnabled
+);
+
 export const formattedCurrentTime = derived(
   progress,
   $progress => youtubeService.formatTime($progress.currentTime)
@@ -97,6 +105,7 @@ export const youtubeActions = {
   playNext: () => youtubeService.playNext(),
   queueVideo: (id, title) => youtubeService.queueVideo(id, title),
   deleteVideo: (id) => youtubeService.deleteVideo(id),
+  toggleControls: () => youtubeService.toggleControls(),
   togglePlay: () => {
     const state = youtubeService.getState();
     if (state.playerState === 'playing') {

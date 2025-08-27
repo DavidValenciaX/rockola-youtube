@@ -3,7 +3,8 @@ import { storageService } from './storageService.js';
 // Storage keys constants
 export const STORAGE_KEYS = {
   UPCOMING: 'upcoming',
-  CURRENT_VIDEO: 'current_video'
+  CURRENT_VIDEO: 'current_video',
+  CONTROLS_ENABLED: 'controls_enabled'
 };
 
 // Import playlist actions - will be set by the store initialization
@@ -22,6 +23,7 @@ export class YouTubeService {
     this.apiLoaded = false;
     this.pendingPlay = null;
     this.createPlayerRetries = 0;
+    this.isRecreating = false; // Flag to track recreation state
     
     // Player state
     this.state = {
@@ -29,7 +31,8 @@ export class YouTubeService {
       videoTitle: null,
       playerState: 'stopped',
       currentTime: 0,
-      duration: 0
+      duration: 0,
+      controlsEnabled: storageService.getItem(STORAGE_KEYS.CONTROLS_ENABLED) ?? true
     };
 
     // Callbacks for state changes
@@ -97,7 +100,7 @@ export class YouTubeService {
         cc_load_policy: 0,
         iv_load_policy: 3,
         autohide: 0,
-        controls: 0
+        controls: this.state.controlsEnabled ? 1 : 0
       },
       events: {
         'onReady': (event) => this.onPlayerReady(event),
@@ -170,6 +173,12 @@ export class YouTubeService {
       case YT.PlayerState.BUFFERING:
         this.state.playerState = 'buffering';
         console.log('Video buffering...');
+        break;
+      case YT.PlayerState.CUED:
+        // Video is cued (loaded but not playing)
+        this.state.playerState = 'paused';
+        console.log('Video cued (ready to play)');
+        this.stopProgressTracking();
         break;
       default:
         this.state.playerState = 'stopped';
@@ -395,6 +404,135 @@ export class YouTubeService {
 
   isReady() {
     return this.ready;
+  }
+
+  // Toggle controls enabled/disabled
+  toggleControls() {
+    if (this.isRecreating) {
+      console.log('Recreation in progress, ignoring controls toggle');
+      return;
+    }
+    
+    this.state.controlsEnabled = !this.state.controlsEnabled;
+    storageService.setItem(STORAGE_KEYS.CONTROLS_ENABLED, this.state.controlsEnabled);
+    
+    // Recreate the player with new controls setting
+    this.recreatePlayer();
+    this.notifyStateChange();
+  }
+
+  // Get controls enabled state
+  getControlsEnabled() {
+    return this.state.controlsEnabled;
+  }
+
+  // Recreate the player (useful when changing settings)
+  recreatePlayer() {
+    if (!this.ready || !this.player || this.isRecreating) return;
+    
+    this.isRecreating = true;
+    
+    // Save current video state
+    const currentVideo = {
+      id: this.state.videoId,
+      title: this.state.videoTitle,
+      currentTime: 0,
+      wasPlaying: this.state.playerState === 'playing'
+    };
+    
+    // Try to get current time if available
+    try {
+      if (this.player.getCurrentTime) {
+        currentVideo.currentTime = this.player.getCurrentTime() || 0;
+      }
+    } catch (e) {
+      console.warn('Could not get current time during recreation:', e);
+    }
+    
+    console.log('Recreating player with controls:', this.state.controlsEnabled, 'Video state:', currentVideo);
+    
+    // Destroy current player
+    try {
+      this.player.destroy();
+    } catch (e) {
+      console.warn('Error destroying player:', e);
+    }
+    this.player = null;
+    
+    // Create new player with updated settings
+    setTimeout(() => {
+      this.createPlayer();
+      
+      // Restore video if there was one playing
+      if (currentVideo.id) {
+        setTimeout(() => {
+          if (this.player && this.player.loadVideoById) {
+            try {
+              console.log('Restoring video:', currentVideo.id, 'at time:', currentVideo.currentTime, 'was playing:', currentVideo.wasPlaying);
+              
+              // Always use loadVideoById to ensure consistent behavior
+              this.player.loadVideoById({
+                videoId: currentVideo.id,
+                startSeconds: Math.max(0, currentVideo.currentTime)
+              });
+              
+              this.state.videoId = currentVideo.id;
+              this.state.videoTitle = currentVideo.title;
+              
+              // Handle playback state based on what it was before
+              if (currentVideo.wasPlaying) {
+                this.state.playerState = 'playing';
+                console.log('Video should continue playing');
+                // loadVideoById automatically starts playback
+              } else {
+                console.log('Video should be paused');
+                // Need to pause after a short delay to let the video load
+                setTimeout(() => {
+                  if (this.player && this.player.pauseVideo) {
+                    this.player.pauseVideo();
+                    this.state.playerState = 'paused';
+                    this.notifyStateChange();
+                  }
+                }, 1500); // Increased delay to ensure video loads
+              }
+              
+              this.notifyStateChange();
+            } catch (e) {
+              console.warn('Error restoring video during recreation:', e);
+              // Enhanced fallback strategy
+              try {
+                console.log('Trying fallback restoration method');
+                if (currentVideo.wasPlaying) {
+                  // For playing videos, use loadVideoById
+                  this.player.loadVideoById(currentVideo.id, currentVideo.currentTime);
+                  this.state.playerState = 'playing';
+                } else {
+                  // For paused videos, use cueVideoById then seek
+                  this.player.cueVideoById(currentVideo.id, currentVideo.currentTime);
+                  this.state.playerState = 'paused';
+                }
+                this.state.videoId = currentVideo.id;
+                this.state.videoTitle = currentVideo.title;
+                this.notifyStateChange();
+              } catch (e2) {
+                console.error('Failed to restore video with fallback:', e2);
+              }
+            }
+          }
+          
+          // Reset recreation flag after restoration attempt
+          setTimeout(() => {
+            this.isRecreating = false;
+            console.log('Recreation completed');
+          }, 2000);
+        }, 800); // Increased timeout for better reliability
+      } else {
+        // No video to restore, just reset flag
+        setTimeout(() => {
+          this.isRecreating = false;
+        }, 500);
+      }
+    }, 100);
   }
 
   // Cleanup method
