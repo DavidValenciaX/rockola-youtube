@@ -183,7 +183,7 @@
     filter: drop-shadow(0 0 5px var(--jukebox-accent));
   }
 
-  .next-to-play .item-number {
+  .playlist-item:has(.next-to-play) .item-number {
     background: var(--jukebox-accent);
     animation: jukeboxPulse 1.5s infinite;
     box-shadow: 0 0 20px var(--jukebox-accent),
