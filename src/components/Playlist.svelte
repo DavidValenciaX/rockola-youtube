@@ -45,64 +45,123 @@
 
 <style>
   #playlist {
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    padding: 20px;
+    background: var(--dark-gradient);
+    border: 2px solid var(--jukebox-chrome-dark);
+    border-radius: 0 0 15px 15px;
+    padding: 0;
+    position: relative;
+    box-shadow: inset 0 0 15px rgba(0,255,255,0.05);
+    overflow: hidden;
+  }
+
+  #playlist::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, 
+      transparent 0%, 
+      var(--jukebox-accent) 50%, 
+      transparent 100%);
+    animation: playlistScan 3s ease-in-out infinite;
   }
 
   h3 {
-    margin: 0 0 15px 0;
-    color: #333;
-    font-weight: 500;
-    font-size: 1.1em;
+    margin: 0;
+    padding: 20px 25px 15px;
+    color: var(--jukebox-accent);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 1em;
+    text-shadow: 0 0 10px var(--jukebox-accent);
+    border-bottom: 1px solid var(--jukebox-chrome-dark);
+    background: var(--jukebox-darker);
+    font-family: 'Orbitron', 'Montserrat', sans-serif;
   }
 
   #upcoming {
     list-style: none;
-    padding: 0;
+    padding: 15px;
     margin: 0;
     max-height: 400px;
     overflow-y: auto;
   }
 
+  /* Jukebox Style Playlist Items */
   .playlist-item {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 12px;
-    border-bottom: 1px solid #f0f0f0;
-    transition: background-color 0.2s ease;
+    gap: 12px;
+    padding: 0;
+    margin-bottom: 10px;
+    border: 1px solid var(--jukebox-chrome-dark);
+    background: var(--chrome-gradient);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .playlist-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--jukebox-secondary);
+    opacity: 0;
+    transition: opacity 0.3s ease;
   }
 
   .playlist-item:hover {
-    background-color: #f8f9fa;
+    background: var(--chrome-gradient-reverse);
+    border-color: var(--jukebox-secondary);
+    box-shadow: 0 0 15px rgba(0,255,255,0.3), 
+                0 4px 8px rgba(0,0,0,0.3);
+    transform: translateX(5px);
+  }
+
+  .playlist-item:hover::before {
+    opacity: 1;
   }
 
   .playlist-item:last-child {
-    border-bottom: none;
+    margin-bottom: 5px;
   }
 
+  /* Jukebox Number Buttons */
   .item-number {
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: var(--neon-gradient);
     color: white;
-    width: 24px;
-    height: 24px;
+    width: 35px;
+    height: 35px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.8em;
-    font-weight: 500;
+    font-size: 0.85em;
+    font-weight: bold;
     flex-shrink: 0;
+    box-shadow: 0 0 10px var(--jukebox-primary), 
+                0 2px 4px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+    border: 2px solid var(--jukebox-chrome);
+    margin: 10px 0 10px 12px;
+    font-family: 'Orbitron', 'Montserrat', sans-serif;
   }
 
   .item-title {
     flex: 1;
     margin: 0;
+    padding: 15px 10px;
     font-size: 0.9em;
     line-height: 1.3;
-    color: #333;
+    color: var(--jukebox-darker);
+    font-weight: 500;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
@@ -112,90 +171,163 @@
   }
 
   .item-title.next-to-play {
-    font-weight: 600;
-    color: #2e7d32;
+    font-weight: 700;
+    color: var(--jukebox-darker);
+    text-shadow: 0 0 5px var(--jukebox-accent);
     position: relative;
   }
 
   .item-title.next-to-play::before {
     content: "▶️ ";
-    margin-right: 5px;
+    margin-right: 8px;
+    filter: drop-shadow(0 0 5px var(--jukebox-accent));
   }
 
+  .next-to-play .item-number {
+    background: var(--jukebox-accent);
+    animation: jukeboxPulse 1.5s infinite;
+    box-shadow: 0 0 20px var(--jukebox-accent),
+                0 0 30px var(--jukebox-accent),
+                0 2px 4px rgba(0,0,0,0.3);
+  }
+
+  /* Delete Button - Jukebox Style */
   .item-delete {
-    background: none;
-    border: none;
+    background: var(--chrome-gradient);
+    border: 1px solid var(--jukebox-chrome-dark);
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 1em;
-    padding: 4px;
-    border-radius: 4px;
-    transition: all 0.2s ease;
-    opacity: 0.6;
+    font-size: 1.1em;
+    padding: 0;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    opacity: 0.7;
+    margin: 8px 12px 8px 0;
+    color: var(--jukebox-primary);
   }
 
   .item-delete:hover {
     opacity: 1;
-    background-color: #ffebee;
-    transform: scale(1.1);
+    background: var(--jukebox-primary);
+    color: white;
+    border-color: var(--jukebox-primary);
+    box-shadow: 0 0 15px var(--jukebox-primary);
+    transform: scale(1.15);
   }
 
   .playlist-summary {
-    margin-top: 15px;
-    padding-top: 15px;
-    border-top: 1px solid #f0f0f0;
+    margin: 0;
+    padding: 15px 25px 20px;
+    border-top: 1px solid var(--jukebox-chrome-dark);
     text-align: center;
+    background: var(--jukebox-darker);
   }
 
   .playlist-summary p {
     margin: 0;
-    font-size: 0.85em;
-    color: #666;
+    font-size: 0.9em;
+    color: var(--jukebox-secondary);
     font-style: italic;
+    text-shadow: 0 0 5px var(--jukebox-secondary);
+    font-family: 'Orbitron', 'Montserrat', sans-serif;
   }
 
   .empty-playlist {
     text-align: center;
-    color: #666;
-    padding: 20px 0;
+    color: var(--jukebox-chrome-dark);
+    padding: 40px 20px;
   }
 
   .empty-playlist p {
-    margin: 0 0 10px 0;
+    margin: 0 0 15px 0;
+    font-size: 1.1em;
+    color: var(--jukebox-secondary);
+    text-shadow: 0 0 5px var(--jukebox-secondary);
   }
 
   .hint {
-    font-size: 0.85em;
+    font-size: 0.9em;
     font-style: italic;
-    color: #999;
+    color: var(--jukebox-chrome-dark);
     line-height: 1.4;
+    opacity: 0.8;
   }
 
   /* Custom scrollbar for playlist */
   #upcoming::-webkit-scrollbar {
-    width: 6px;
+    width: 8px;
   }
 
   #upcoming::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 3px;
+    background: var(--jukebox-darker);
+    border-radius: 4px;
   }
 
   #upcoming::-webkit-scrollbar-thumb {
-    background: #ccc;
-    border-radius: 3px;
+    background: var(--chrome-gradient);
+    border-radius: 4px;
+    border: 1px solid var(--jukebox-chrome-dark);
   }
 
   #upcoming::-webkit-scrollbar-thumb:hover {
-    background: #999;
+    background: var(--chrome-gradient-reverse);
   }
 
+  /* Animations */
+  @keyframes playlistScan {
+    0% { transform: translateX(-100%); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: translateX(100%); opacity: 0; }
+  }
+
+  @keyframes jukeboxPulse {
+    0%, 100% { 
+      transform: scale(1);
+      box-shadow: 0 0 20px var(--jukebox-accent);
+    }
+    50% { 
+      transform: scale(1.1);
+      box-shadow: 0 0 30px var(--jukebox-accent), 0 0 40px var(--jukebox-accent);
+    }
+  }
+
+  /* Responsive Design */
   @media (max-width: 480px) {
     .playlist-item {
-      padding: 10px 8px;
+      padding: 0;
+      gap: 10px;
+    }
+    
+    .item-number {
+      width: 30px;
+      height: 30px;
+      font-size: 0.75em;
+      margin: 8px 0 8px 10px;
     }
     
     .item-title {
       font-size: 0.85em;
+      padding: 12px 8px;
+    }
+    
+    .item-delete {
+      width: 38px;
+      height: 38px;
+      font-size: 1em;
+      margin: 6px 10px 6px 0;
+    }
+    
+    h3 {
+      padding: 15px 20px 12px;
+      font-size: 0.9em;
+    }
+    
+    .playlist-summary {
+      padding: 12px 20px 15px;
     }
   }
 </style>
