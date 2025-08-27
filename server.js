@@ -3,16 +3,22 @@
  * Sirve archivos estáticos y habilita CORS para evitar problemas con APIs externas
  */
 
-const express = require('express');
-const cors = require('cors');
-const path = require('path');
-const axios = require('axios');
+import express from 'express';
+import cors from 'cors';
+import path from 'path';
+import axios from 'axios';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // Constantes de configuración del servidor
 const SERVER_CONFIG = {
   PORT: process.env.PORT || 3000,
   HOST: process.env.HOST || 'localhost',
-  STATIC_PATH: __dirname,
+  STATIC_PATH: process.env.NODE_ENV === 'production' ? path.join(__dirname, 'dist') : __dirname,
+  INDEX_FILE: process.env.NODE_ENV === 'production' ? 'index.html' : 'index-svelte.html',
   YOUTUBE: {
     BASE_URL: 'https://www.youtube.com',
     SEARCH_URL: 'https://www.youtube.com/results',
@@ -34,10 +40,21 @@ app.use(cors(corsOptions));
 // Servir archivos estáticos desde el directorio actual
 app.use(express.static(SERVER_CONFIG.STATIC_PATH));
 
-// Ruta principal - servir index.html
+// Ruta principal - servir index.html apropiado
 app.get('/', (req, res) => {
-  res.sendFile(path.join(SERVER_CONFIG.STATIC_PATH, 'index.html'));
+  res.sendFile(path.join(SERVER_CONFIG.STATIC_PATH, SERVER_CONFIG.INDEX_FILE));
 });
+
+// Ruta catch-all para SPA (solo en producción)
+if (process.env.NODE_ENV === 'production') {
+  app.get('*', (req, res) => {
+    // Evitar que archivos de API se redirijan al index
+    if (req.path.startsWith('/api/')) {
+      return res.status(404).json({ error: 'API endpoint not found' });
+    }
+    res.sendFile(path.join(SERVER_CONFIG.STATIC_PATH, SERVER_CONFIG.INDEX_FILE));
+  });
+}
 
 // Proxy para búsquedas de YouTube
 app.get('/api/search', async (req, res) => {
@@ -148,6 +165,7 @@ app.listen(SERVER_CONFIG.PORT, SERVER_CONFIG.HOST, () => {
   console.log(`📍 URL: http://${SERVER_CONFIG.HOST}:${SERVER_CONFIG.PORT}`);
   console.log(`📂 Sirviendo archivos desde: ${SERVER_CONFIG.STATIC_PATH}`);
   console.log(`🔗 CORS habilitado para APIs externas`);
+  console.log(`🎧 Modo: ${process.env.NODE_ENV || 'development'}`);
   console.log('');
   console.log('Para detener el servidor presiona Ctrl+C');
 });

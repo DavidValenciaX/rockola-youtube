@@ -113,7 +113,6 @@ rockola-youtube/
 │   ├── App.svelte           # Main application component
 │   └── main.js              # Application entry point
 ├── dist/                    # Built files (generated)
-├── backup-angularjs/        # Backup of original AngularJS files
 ├── server.js                # Express server
 ├── vite.config.js           # Vite configuration
 ├── svelte.config.js         # Svelte configuration
@@ -191,14 +190,6 @@ This project has been completely refactored from AngularJS to Svelte while maint
 - ✅ Same API endpoints and backend functionality
 - ✅ Compatible with existing localStorage data
 - ✅ Same user interface and experience
-
-### Backup Files
-The original AngularJS files have been preserved in the `backup-angularjs/` directory:
-- `app.js` - Original AngularJS application logic
-- `angular.min.js` - AngularJS framework
-- `angular-local-storage.js` - LocalStorage plugin
-- `index-angular.html` - Original HTML template
-- `README-ANGULAR.md` - Original documentation
 
 ## Troubleshooting
 
