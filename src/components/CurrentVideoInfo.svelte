@@ -1,12 +1,6 @@
 <script>
-  import { youtubeState, youtubeActions, progress, formattedCurrentTime, formattedDuration, isPlaying, hasCurrentVideo, controlsEnabled } from '../stores/youtube.js';
+  import { youtubeState, youtubeActions, progress, formattedCurrentTime, formattedDuration, isPlaying, hasCurrentVideo } from '../stores/youtube.js';
   import { playlistActions, hasUpcomingVideos } from '../stores/playlist.js';
-
-  // Local variable to handle checkbox state
-  let controlsChecked = false;
-  
-  // Subscribe to the store to update local variable
-  $: controlsChecked = $controlsEnabled;
 
   function togglePlay() {
     youtubeActions.togglePlay();
@@ -19,22 +13,11 @@
   function startPlaylist() {
     playlistActions.startPlaylist();
   }
-
-  function toggleControls() {
-    youtubeActions.toggleControls();
-  }
 </script>
 
 <div id="current-video-info">
   <div class="header-section">
     <h3>Reproduciendo Ahora</h3>
-    <div class="controls-toggle">
-      <label class="checkbox-container">
-        <input type="checkbox" checked={controlsChecked} on:change={toggleControls} />
-        <span class="checkmark"></span>
-        <span class="label-text">Controles del reproductor</span>
-      </label>
-    </div>
   </div>
   
   {#if $youtubeState.videoTitle}
@@ -152,79 +135,7 @@
   }
 
   .header-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     margin-bottom: 20px;
-    flex-wrap: wrap;
-    gap: 15px;
-  }
-
-  .controls-toggle {
-    display: flex;
-    align-items: center;
-  }
-
-  .checkbox-container {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    font-size: 0.9em;
-    color: var(--jukebox-secondary);
-    gap: 10px;
-    user-select: none;
-  }
-
-  .checkbox-container input[type="checkbox"] {
-    display: none;
-  }
-
-  .checkmark {
-    width: 20px;
-    height: 20px;
-    background: var(--jukebox-darker);
-    border: 2px solid var(--jukebox-chrome-dark);
-    border-radius: 4px;
-    position: relative;
-    transition: all 0.3s ease;
-    box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
-  }
-
-  .checkmark::after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    width: 8px;
-    height: 8px;
-    background: var(--jukebox-accent);
-    border-radius: 2px;
-    transition: transform 0.2s ease;
-    box-shadow: 0 0 8px var(--jukebox-accent);
-  }
-
-  .checkbox-container input[type="checkbox"]:checked + .checkmark {
-    background: var(--jukebox-dark);
-    border-color: var(--jukebox-accent);
-    box-shadow: 0 0 10px rgba(255,255,0,0.3), inset 0 0 5px rgba(255,255,0,0.1);
-  }
-
-  .checkbox-container input[type="checkbox"]:checked + .checkmark::after {
-    transform: translate(-50%, -50%) scale(1);
-  }
-
-  .checkbox-container:hover .checkmark {
-    border-color: var(--jukebox-secondary);
-    box-shadow: 0 0 8px rgba(0,255,255,0.2), inset 0 0 5px rgba(0,0,0,0.5);
-  }
-
-  .label-text {
-    font-family: 'Orbitron', 'Montserrat', sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 500;
-    text-shadow: 0 0 5px var(--jukebox-secondary);
   }
 
   .video-info {
@@ -472,30 +383,6 @@
   @media (max-width: 480px) {
     #current-video-info {
       padding: 20px;
-    }
-    
-    .header-section {
-      flex-direction: column;
-      align-items: stretch;
-      gap: 15px;
-    }
-    
-    .controls-toggle {
-      justify-content: center;
-    }
-    
-    .checkbox-container {
-      font-size: 0.85em;
-    }
-    
-    .checkmark {
-      width: 18px;
-      height: 18px;
-    }
-    
-    .checkmark::after {
-      width: 6px;
-      height: 6px;
     }
     
     .controls {
