@@ -8,6 +8,10 @@
   function getItemClass(index) {
     return playlistActions.getItemClass(index);
   }
+
+  function playVideoFromPlaylist(videoId) {
+    playlistActions.playFromPlaylist(videoId);
+  }
 </script>
 
 <div id="playlist">
@@ -18,9 +22,13 @@
       {#each $upcoming as video, index (video.id + '_' + (video.timestamp || index))}
         <li class="playlist-item">
           <span class="item-number">{index + 1}</span>
-          <p class="item-title {getItemClass(index)}">
+          <button 
+            class="item-title {getItemClass(index)}" 
+            on:click={() => playVideoFromPlaylist(video.id)}
+            title="Haz clic para reproducir este video"
+          >
             {video.title}
-          </p>
+          </button>
           <button 
             class="item-delete" 
             on:click={() => deleteVideo(video.id)}
@@ -168,6 +176,32 @@
     -webkit-line-clamp: 2;
     line-clamp: 2;
     -webkit-box-orient: vertical;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    position: relative;
+    
+    /* Reset button default styles */
+    background: none;
+    border: none;
+    text-align: left;
+    font-family: inherit;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  }
+
+  .item-title:hover {
+    background: rgba(0, 255, 255, 0.1);
+    color: var(--jukebox-secondary);
+    text-shadow: 0 0 8px var(--jukebox-secondary);
+    transform: scale(1.02);
+  }
+
+  .item-title:focus {
+    outline: 2px solid var(--jukebox-secondary);
+    outline-offset: 2px;
+    background: rgba(0, 255, 255, 0.15);
   }
 
   .item-title.next-to-play {

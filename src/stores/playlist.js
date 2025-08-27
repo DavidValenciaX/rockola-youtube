@@ -132,6 +132,29 @@ export const playlistActions = {
   // Method to get current upcoming list (for YouTube service to access)
   getUpcoming() {
     return storageService.getItem(STORAGE_KEYS.UPCOMING) || [];
+  },
+
+  // Play a specific video from the playlist
+  playFromPlaylist(videoId) {
+    upcoming.update(currentList => {
+      // Find the video in the playlist
+      const videoIndex = currentList.findIndex(video => video.id === videoId);
+      if (videoIndex === -1) {
+        console.log('Video not found in playlist:', videoId);
+        return currentList;
+      }
+
+      const videoToPlay = currentList[videoIndex];
+      console.log('Playing video from playlist:', videoToPlay.title);
+
+      // Play the video using YouTube service
+      const ytService = youtubeService;
+      ytService.playVideo(videoToPlay.id, videoToPlay.title);
+
+      // Remove the video from the playlist
+      const newList = currentList.filter((_, index) => index !== videoIndex);
+      return newList;
+    });
   }
 };
 
