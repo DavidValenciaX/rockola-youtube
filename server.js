@@ -16,7 +16,7 @@ const __dirname = dirname(__filename);
 // Constantes de configuración del servidor
 const SERVER_CONFIG = {
   PORT: process.env.PORT || 3000,
-  HOST: process.env.HOST || 'localhost',
+  HOST: process.env.HOST || '0.0.0.0',
   STATIC_PATH: process.env.NODE_ENV === 'production' ? path.join(__dirname, 'dist') : __dirname,
   INDEX_FILE: 'index.html',
   YOUTUBE: {
