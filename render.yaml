@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: rockola-youtube
+    env: node
+    plan: free
+    buildCommand: npm install --production=false && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
