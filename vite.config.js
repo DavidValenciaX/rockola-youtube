@@ -1,7 +1,5 @@
 import { defineConfig } from 'vite';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
-import { resolve } from 'path';
-import { fileURLToPath, URL } from 'node:url';
 
 export default defineConfig({
   plugins: [svelte()],
@@ -10,12 +8,7 @@ export default defineConfig({
     outDir: 'dist',
     emptyOutDir: true,
     rollupOptions: {
-      input: resolve(fileURLToPath(new URL('.', import.meta.url)), 'index.html'),
-      output: {
-        assetFileNames: 'assets/[name].[hash].[ext]',
-        chunkFileNames: 'assets/[name].[hash].js',
-        entryFileNames: 'assets/[name].[hash].js'
-      }
+      input: './index.html'
     }
   },
   server: {

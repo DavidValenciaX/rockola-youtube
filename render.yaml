@@ -3,7 +3,6 @@ services:
     name: rockola-youtube
     env: node
     plan: free
-    preDeployCommand: npm install --include=dev
     buildCommand: npm run build
     startCommand: npm start
     envVars:

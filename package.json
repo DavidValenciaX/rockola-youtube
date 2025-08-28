@@ -9,7 +9,8 @@
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "dev:server": "node --watch server.js",
     "dev:client": "vite",
-    "build": "npx vite build",
+    "build": "npm install --include=dev && npx vite build",
+    "build:simple": "npx vite build",
     "preview": "vite preview",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
