@@ -15,9 +15,9 @@
   }
 </script>
 
-<div id="current-video-info">
-  <div class="header-section">
-    <h3>Reproduciendo Ahora</h3>
+<div class="current-video-info">
+  <div class="info-header">
+    <h3 class="info-title">Reproduciendo Ahora</h3>
   </div>
   
   {#if $youtubeState.videoTitle}
@@ -84,12 +84,22 @@
 </div>
 
 <style>
-  #current-video-info {
+  /* Component-specific variables for CurrentVideoInfo */
+  .current-video-info {
+    --info-padding: 25px;
+    --info-border-radius: 15px;
+    --info-gap: 15px;
+    --progress-height: 8px;
+    --control-padding: 12px 18px;
+    --control-border-radius: 25px;
+    --state-padding: 8px 15px;
+    --state-border-radius: 20px;
+    
     margin-bottom: 0;
-    padding: 25px;
+    padding: var(--info-padding);
     background: var(--jukebox-darker);
     border: 2px solid var(--jukebox-chrome-dark);
-    border-radius: 15px 15px 0 0;
+    border-radius: var(--info-border-radius) var(--info-border-radius) 0 0;
     color: var(--jukebox-secondary);
     position: relative;
     box-shadow: inset 0 0 20px rgba(0,255,255,0.1),
@@ -97,7 +107,7 @@
     overflow: hidden;
   }
 
-  #current-video-info::before {
+  .current-video-info::before {
     content: '';
     position: absolute;
     top: 0;
@@ -111,7 +121,7 @@
     animation: scanLine 2s ease-in-out infinite;
   }
 
-  #current-video-info::after {
+  .current-video-info::after {
     content: '';
     position: absolute;
     bottom: 5px;
@@ -124,24 +134,24 @@
     animation: statusBlink 1.5s ease-in-out infinite;
   }
 
-  h3 {
+  .info-header {
+    margin-bottom: 20px;
+  }
+
+  .info-title {
     margin: 0;
     color: var(--jukebox-accent);
     text-shadow: 0 0 10px var(--jukebox-accent);
     font-size: 1.1em;
     text-transform: uppercase;
     letter-spacing: 2px;
-    font-family: 'Orbitron', 'Montserrat', sans-serif;
-  }
-
-  .header-section {
-    margin-bottom: 20px;
+    font-family: var(--font-orbitron);
   }
 
   .video-info {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: var(--info-gap);
   }
 
   .video-title {
@@ -151,7 +161,7 @@
     line-height: 1.4;
     font-size: 1em;
     text-shadow: 0 0 5px currentColor;
-    font-family: 'Orbitron', 'Montserrat', sans-serif;
+    font-family: var(--font-orbitron);
   }
 
   .progress-container {
@@ -175,7 +185,7 @@
   }
 
   .progress-bar {
-    height: 8px;
+    height: var(--progress-height);
     background: var(--jukebox-dark);
     border: 1px solid var(--jukebox-chrome-dark);
     border-radius: 4px;
@@ -215,11 +225,11 @@
 
   .state-indicator {
     font-size: 0.9em;
-    padding: 8px 15px;
-    border-radius: 20px;
+    padding: var(--state-padding);
+    border-radius: var(--state-border-radius);
     font-weight: 600;
     border: 1px solid transparent;
-    font-family: 'Orbitron', 'Montserrat', sans-serif;
+    font-family: var(--font-orbitron);
     text-transform: uppercase;
     letter-spacing: 1px;
   }
@@ -264,8 +274,8 @@
     background: var(--chrome-gradient);
     color: var(--jukebox-darker);
     border: 2px solid var(--jukebox-chrome-dark);
-    padding: 12px 18px;
-    border-radius: 25px;
+    padding: var(--control-padding);
+    border-radius: var(--control-border-radius);
     cursor: pointer;
     font-size: 0.9em;
     font-weight: bold;
@@ -276,7 +286,7 @@
     position: relative;
     overflow: hidden;
     box-shadow: var(--chrome-shadow);
-    font-family: 'Orbitron', 'Montserrat', sans-serif;
+    font-family: var(--font-orbitron);
   }
 
   .control-btn::before {
@@ -352,7 +362,7 @@
     margin-top: 10px;
   }
 
-  /* Animations */
+  /* Component-specific animations */
   @keyframes scanLine {
     0% { transform: translateX(-100%); opacity: 0; }
     50% { opacity: 1; }
@@ -379,10 +389,10 @@
     50% { opacity: 0.5; }
   }
 
-  /* Responsive Design */
+  /* Component-specific responsive design */
   @media (max-width: 480px) {
-    #current-video-info {
-      padding: 20px;
+    .current-video-info {
+      --info-padding: 20px;
     }
     
     .controls {

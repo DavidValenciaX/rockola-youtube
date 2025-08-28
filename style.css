@@ -1,5 +1,5 @@
 :root {
-  /* Jukebox Color Palette */
+  /* Design Tokens - Jukebox Color Palette */
   --jukebox-primary: #ff0040;        /* Bright neon red */
   --jukebox-secondary: #00ffff;      /* Cyan neon */
   --jukebox-accent: #ffff00;         /* Yellow neon */
@@ -12,16 +12,20 @@
   --jukebox-orange: #ff4500;         /* Electric orange */
   --jukebox-green: #00ff41;          /* Electric green */
   
-  /* Gradients */
+  /* Design Tokens - Gradients */
   --chrome-gradient: linear-gradient(145deg, #f0f0f0 0%, #c0c0c0 50%, #a0a0a0 100%);
   --chrome-gradient-reverse: linear-gradient(145deg, #a0a0a0 0%, #c0c0c0 50%, #f0f0f0 100%);
   --neon-gradient: linear-gradient(145deg, var(--jukebox-primary), var(--jukebox-glow));
   --dark-gradient: linear-gradient(145deg, var(--jukebox-dark), var(--jukebox-darker));
   
-  /* Shadows and Effects */
+  /* Design Tokens - Shadows and Effects */
   --neon-glow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor;
   --chrome-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.8);
   --deep-shadow: 0 8px 32px rgba(0,0,0,0.6);
+  
+  /* Design Tokens - Typography */
+  --font-orbitron: 'Orbitron', 'Montserrat', Arial, sans-serif;
+  --font-base: 'Orbitron', 'Montserrat', Arial, sans-serif;
 }
 
 /* CSS Reset with Jukebox Foundation */
@@ -54,8 +58,8 @@ body{
 
 a{ cursor: pointer; transition: all 0.3s ease;}
 
-body, input{ font: 18px/1.4 'Orbitron', 'Montserrat', Arial, sans-serif;}
-h1 strong, #playlist, .video-title{ font-family: 'Orbitron', 'Montserrat', Arial, sans-serif; font-weight: bold; }
+/* Base typography */
+body, input{ font: 18px/1.4 var(--font-base);}
 
 /* Jukebox Header Styling */
 header{ 
@@ -304,7 +308,7 @@ nav{ display: none; } /* Navigation moved to components */
   animation: controlPanelGlow 2s ease-in-out infinite;
 }
 
-/* Current Video Info - LED Display Style */
+/* Current Video Info - Base styles only */
 #current-video-info{ 
   background: var(--jukebox-darker);
   border: 2px solid var(--jukebox-chrome-dark);
@@ -315,35 +319,7 @@ nav{ display: none; } /* Navigation moved to components */
   box-shadow: inset 0 0 20px rgba(0,255,255,0.1);
 }
 
-#current-video-info::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: var(--jukebox-secondary);
-  box-shadow: 0 0 10px var(--jukebox-secondary);
-}
-
-#current-video-info h3{ 
-  margin-bottom: 15px;
-  color: var(--jukebox-accent);
-  text-shadow: 0 0 10px var(--jukebox-accent);
-  font-size: 1em;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-#current{ 
-  color: var(--jukebox-chrome);
-  font-size: 14px;
-  margin-bottom: 15px;
-  min-height: 20px;
-  text-shadow: 0 0 5px currentColor;
-}
-
-/* Jukebox Style Control Buttons */
+/* Base control button styles */
 #video-controls{ 
   display: flex;
   gap: 12px;
@@ -363,45 +339,7 @@ nav{ display: none; } /* Navigation moved to components */
   letter-spacing: 1px;
   transition: all 0.3s ease;
   box-shadow: 0 3px 6px rgba(0,0,0,0.3);
-  position: relative;
-  overflow: hidden;
-}
-
-#video-controls button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-  transition: left 0.6s ease;
-}
-
-#video-controls button:hover::before {
-  left: 100%;
-}
-
-#video-controls button:hover{ 
-  background: var(--chrome-gradient-reverse);
-  border-color: var(--jukebox-secondary);
-  color: var(--jukebox-darker);
-  box-shadow: 0 0 15px rgba(0,255,255,0.5), 0 5px 10px rgba(0,0,0,0.4);
-  transform: translateY(-2px);
-}
-
-#video-controls button:active{
-  transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-}
-
-#video-controls button:disabled{ 
-  background: var(--jukebox-chrome-dark);
-  color: var(--jukebox-darker);
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
+  font-family: var(--font-base);
 }
 
 /* Jukebox Song Selection Panel */
