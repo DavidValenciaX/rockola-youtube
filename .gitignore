@@ -19,6 +19,8 @@ node_modules/
 dist/
 build/
 .svelte-kit/
+dist/*
+dist/**
 
 # Environment variables
 .env
