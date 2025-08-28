@@ -45,18 +45,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(SERVER_CONFIG.STATIC_PATH, SERVER_CONFIG.INDEX_FILE));
 });
 
-// Ruta catch-all para SPA (solo en producción)
-if (process.env.NODE_ENV === 'production') {
-  app.get('*', (req, res) => {
-    // Evitar que archivos de API se redirijan al index
-    if (req.path.startsWith('/api/')) {
-      return res.status(404).json({ error: 'Endpoint de API no encontrado' });
-    }
-    res.sendFile(path.join(SERVER_CONFIG.STATIC_PATH, SERVER_CONFIG.INDEX_FILE));
-  });
-}
-
-// Proxy para búsquedas de YouTube
+// Proxy para búsquedas de YouTube (DEBE estar antes del catch-all)
 app.get('/api/search', async (req, res) => {
   const query = req.query.q;
   const maxResults = req.query.max_results || 10;
@@ -147,6 +136,17 @@ app.get('/api/search', async (req, res) => {
     return res.status(500).json({ error: `Error en la búsqueda: ${error.message}` });
   }
 });
+
+// Ruta catch-all para SPA (solo en producción)
+if (process.env.NODE_ENV === 'production') {
+  app.get('*', (req, res) => {
+    // Evitar que archivos de API se redirijan al index
+    if (req.path.startsWith('/api/')) {
+      return res.status(404).json({ error: 'Endpoint de API no encontrado' });
+    }
+    res.sendFile(path.join(SERVER_CONFIG.STATIC_PATH, SERVER_CONFIG.INDEX_FILE));
+  });
+}
 
 // Manejo de errores
 app.use((err, req, res, next) => {
