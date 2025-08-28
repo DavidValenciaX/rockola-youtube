@@ -152,6 +152,8 @@ nav{ display: none; } /* Navigation moved to components */
 /* Jukebox Screen Container */
 #youtube-container{ 
   flex: 2;
+  display: flex;
+  flex-direction: column;
   background: var(--jukebox-darker);
   border: 3px solid var(--jukebox-chrome);
   border-radius: 20px;
