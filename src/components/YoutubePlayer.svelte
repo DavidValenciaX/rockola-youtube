@@ -96,7 +96,7 @@
     align-items: center;
     justify-content: center;
     background-color: rgba(0, 0, 0, 0.8);
-    color: white;
+    color: var(--jukebox-chrome, white);
     z-index: 10;
   }
 
@@ -104,15 +104,10 @@
     width: 40px;
     height: 40px;
     border: 4px solid rgba(255, 255, 255, 0.3);
-    border-top: 4px solid white;
+    border-top: 4px solid var(--jukebox-chrome, white);
     border-radius: 50%;
-    animation: spin 1s linear infinite;
+    animation: jukeboxSpin 1s linear infinite;
     margin-bottom: 15px;
-  }
-
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
   }
 
   .no-video-message {
@@ -125,26 +120,14 @@
     margin: 0 0 15px 0;
     font-size: 1.5em;
     font-weight: 300;
+    font-family: var(--font-base, 'Orbitron', 'Montserrat', sans-serif);
   }
 
   .no-video-message p {
     margin: 0;
     opacity: 0.8;
     line-height: 1.5;
-  }
-
-  @media (max-width: 768px) {
-    .youtube-player-container {
-      height: 300px;
-    }
-    
-    .no-video-message h3 {
-      font-size: 1.2em;
-    }
-    
-    .no-video-message p {
-      font-size: 0.9em;
-    }
+    font-family: var(--font-base, 'Orbitron', 'Montserrat', sans-serif);
   }
 
   .controls-toggle {
@@ -166,6 +149,7 @@
     color: var(--jukebox-secondary);
     gap: 10px;
     user-select: none;
+    font-family: var(--font-base, 'Orbitron', 'Montserrat', sans-serif);
   }
 
   .checkbox-container input[type="checkbox"] {
@@ -179,7 +163,7 @@
     border: 2px solid var(--jukebox-chrome-dark);
     border-radius: 4px;
     position: relative;
-    transition: all 0.3s ease;
+    transition: var(--transition-standard, all 0.3s ease);
     box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
   }
 
@@ -213,14 +197,27 @@
   }
 
   .label-text {
-    font-family: 'Orbitron', 'Montserrat', sans-serif;
+    font-family: var(--font-base, 'Orbitron', 'Montserrat', sans-serif);
     text-transform: uppercase;
     letter-spacing: 1px;
     font-weight: 500;
     text-shadow: 0 0 5px var(--jukebox-secondary);
   }
 
+  /* Component-specific responsive adjustments */
   @media (max-width: 768px) {
+    .youtube-player-container {
+      height: 300px;
+    }
+    
+    .no-video-message h3 {
+      font-size: 1.2em;
+    }
+    
+    .no-video-message p {
+      font-size: 0.9em;
+    }
+    
     .controls-toggle {
       justify-content: center;
     }
