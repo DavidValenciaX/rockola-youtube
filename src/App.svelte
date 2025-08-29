@@ -36,7 +36,6 @@
   #main-container { 
     display: flex;
     margin: var(--spacing-lg) auto;
-    max-width: 1400px;
     min-height: 800px;
     background: var(--dark-gradient);
     border: 4px solid var(--jukebox-chrome);
