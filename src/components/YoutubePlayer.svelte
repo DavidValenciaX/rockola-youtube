@@ -67,6 +67,8 @@
 </div>
 
 <style>
+  /* YoutubePlayer Component - Fully Self-Contained Styles */
+  
   .youtube-player-container {
     position: relative;
     width: 100%;
@@ -113,7 +115,7 @@
   .no-video-message {
     text-align: center;
     max-width: 400px;
-    padding: 20px;
+    padding: var(--spacing-lg);
   }
 
   .no-video-message h3 {
@@ -157,8 +159,8 @@
   }
 
   .checkmark {
-    width: 20px;
-    height: 20px;
+    width: var(--spacing-lg);
+    height: var(--spacing-lg);
     background: var(--jukebox-darker);
     border: 2px solid var(--jukebox-chrome-dark);
     border-radius: 4px;
@@ -173,12 +175,12 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%) scale(0);
-    width: 8px;
-    height: 8px;
+    width: var(--spacing-xs);
+    height: var(--spacing-xs);
     background: var(--jukebox-accent);
     border-radius: 2px;
     transition: transform 0.2s ease;
-    box-shadow: 0 0 8px var(--jukebox-accent);
+    box-shadow: 0 0 var(--spacing-xs) var(--jukebox-accent);
   }
 
   .checkbox-container input[type="checkbox"]:checked + .checkmark {
@@ -193,7 +195,7 @@
 
   .checkbox-container:hover .checkmark {
     border-color: var(--jukebox-secondary);
-    box-shadow: 0 0 8px rgba(0,255,255,0.2), inset 0 0 5px rgba(0,0,0,0.5);
+    box-shadow: 0 0 var(--spacing-xs) rgba(0,255,255,0.2), inset 0 0 5px rgba(0,0,0,0.5);
   }
 
   .label-text {

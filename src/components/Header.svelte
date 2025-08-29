@@ -8,13 +8,15 @@
 </header>
 
 <style>
+  /* Header Component - Fully Self-Contained Styles */
+  
   header {
     background: var(--dark-gradient);
     border: 3px solid var(--jukebox-chrome);
-    border-radius: 20px 20px 0 0;
+    border-radius: var(--border-radius-large) var(--border-radius-large) 0 0;
     box-shadow: var(--chrome-shadow), var(--deep-shadow);
     color: var(--jukebox-chrome);
-    padding: 25px 30px;
+    padding: var(--spacing-xl) 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -44,8 +46,8 @@
     position: absolute;
     top: 15px;
     right: 15px;
-    width: 12px;
-    height: 12px;
+    width: var(--spacing-sm);
+    height: var(--spacing-sm);
     background: var(--jukebox-secondary);
     border-radius: 50%;
     box-shadow: 0 0 15px var(--jukebox-secondary);
@@ -56,7 +58,7 @@
     margin: 0;
     font-size: 2.5em;
     font-weight: bold;
-    font-family: 'Orbitron', 'Montserrat', sans-serif;
+    font-family: var(--font-orbitron);
     background: var(--neon-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -78,8 +80,8 @@
   @media (max-width: 768px) {
     header {
       flex-direction: column;
-      gap: 20px;
-      padding: 20px;
+      gap: var(--spacing-lg);
+      padding: var(--spacing-lg);
       border-radius: 15px 15px 0 0;
     }
     
@@ -99,25 +101,5 @@
     h1 {
       font-size: 1.6em;
     }
-  }
-
-  /* Keyframes for animations */
-  @keyframes neonFlow {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
-  }
-
-  @keyframes neonPulse {
-    0% { 
-      filter: drop-shadow(0 0 5px var(--jukebox-primary)) brightness(1); 
-    }
-    100% { 
-      filter: drop-shadow(0 0 20px var(--jukebox-primary)) brightness(1.2); 
-    }
-  }
-
-  @keyframes cornerGlow {
-    0%, 100% { opacity: 0.5; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.2); }
   }
 </style>

@@ -40,17 +40,19 @@
 </form>
 
 <style>
+  /* SearchForm Component - Fully Self-Contained Styles */
+  
   #search {
     display: flex;
-    gap: 12px;
+    gap: var(--spacing-sm);
     align-items: center;
     position: relative;
   }
 
   #query {
-    padding: 12px 20px;
+    padding: var(--spacing-sm) var(--spacing-lg);
     border: 2px solid var(--jukebox-chrome);
-    border-radius: 25px;
+    border-radius: var(--border-radius-pill);
     font-size: 1em;
     width: 350px;
     outline: none;

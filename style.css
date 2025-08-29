@@ -30,7 +30,20 @@
   /* Design Tokens - Transitions */
   --transition-standard: all 0.3s ease;
   --transition-glow: left 0.6s ease;
+  
+  /* Design Tokens - Spacing and Layout */
+  --border-radius-small: 8px;
+  --border-radius-medium: 12px;
+  --border-radius-large: 20px;
+  --border-radius-pill: 25px;
+  --spacing-xs: 8px;
+  --spacing-sm: 12px;
+  --spacing-md: 15px;
+  --spacing-lg: 20px;
+  --spacing-xl: 25px;
 }
+
+/* Global Foundation Styles - Minimal base for component-first architecture */
 
 /* CSS Reset with Jukebox Foundation */
 body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td{ 
@@ -48,211 +61,50 @@ h1, h2, h3, h4, h5, h6{ font-size: 100%; font-weight: normal;}
 q:before, q:after{ content: '';}
 abbr, acronym{ border: 0;}
 
-/* Jukebox Body Styling */
+/* Jukebox Base Body Styling */
 body{ 
   margin: 0;
   padding: 0;
   background: var(--dark-gradient);
   background-attachment: fixed;
   min-height: 100vh;
-  font-family: 'Orbitron', 'Montserrat', Arial, sans-serif;
+  font-family: var(--font-base);
   color: var(--jukebox-chrome);
   overflow-x: hidden;
+  font-size: 18px;
+  line-height: 1.4;
 }
 
-a{ cursor: pointer; transition: all 0.3s ease;}
-
-/* Base typography */
-body, input{ font: 18px/1.4 var(--font-base);}
-
-
-
-/* Legacy selectors for old layout - cleaned up during refactoring */
-nav{ display: none; } /* Navigation moved to components */
-#play, #pause, #next, #prev{ display: none; }
-
-/* Jukebox Cabinet Main Container */
-#main-container{ 
-  display: flex;
-  margin: 20px auto;
-  max-width: 1400px;
-  min-height: 800px;
-  background: var(--dark-gradient);
-  border: 4px solid var(--jukebox-chrome);
-  border-radius: 25px;
-  box-shadow: var(--chrome-shadow), var(--deep-shadow);
-  padding: 20px;
-  gap: 25px;
-  position: relative;
-  overflow: hidden;
+a{ 
+  cursor: pointer; 
+  transition: var(--transition-standard);
 }
 
-#main-container::before {
-  content: '';
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  right: 10px;
-  bottom: 10px;
-  border: 2px solid var(--jukebox-chrome-dark);
-  border-radius: 20px;
-  pointer-events: none;
+/* Global Input Styling */
+input{ 
+  font: 18px/1.4 var(--font-base);
 }
 
-/* Decorative corner elements */
-#main-container::after {
-  content: '';
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  width: 30px;
-  height: 30px;
-  background: radial-gradient(circle, var(--jukebox-secondary), transparent);
-  border-radius: 50%;
-  animation: cornerGlow 3s ease-in-out infinite;
-}
-
-/* Jukebox Screen Container */
-#youtube-container{ 
-  flex: 2;
-  display: flex;
-  flex-direction: column;
-  background: var(--jukebox-darker);
-  border: 3px solid var(--jukebox-chrome);
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: var(--chrome-shadow), 
-              inset 0 0 20px rgba(0,255,255,0.1);
-  position: relative;
-}
-
-#youtube-container::before {
-  content: '';
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  right: 5px;
-  bottom: 5px;
-  border: 1px solid var(--jukebox-secondary);
-  border-radius: 15px;
-  pointer-events: none;
-  box-shadow: 0 0 15px var(--jukebox-secondary);
-  z-index: 1;
-}
-
-#youtube-player{ 
-  width: 100%; 
-  height: 70%; 
-  min-height: 400px;
-  background: black;
-  border-radius: 15px 15px 0 0;
-  position: relative;
-  z-index: 2;
-}
-
-/* Note: Search results styles moved to SearchResults.svelte component for better encapsulation */
-
-/* Jukebox Control Panel */
-#control-panel{ 
-  flex: 1;
-  min-width: 350px;
-  background: var(--chrome-gradient);
-  border: 3px solid var(--jukebox-chrome);
-  border-radius: 20px;
-  box-shadow: var(--chrome-shadow), var(--deep-shadow);
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  overflow: hidden;
-}
-
-#control-panel::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, 
-    var(--jukebox-primary), 
-    var(--jukebox-accent), 
-    var(--jukebox-secondary));
-  animation: controlPanelGlow 2s ease-in-out infinite;
-}
-
-/* Note: Current Video Info styles moved to CurrentVideoInfo.svelte component for better encapsulation */
-
-/* Base control button styles */
-#video-controls{ 
-  display: flex;
-  gap: 12px;
-  margin-top: 10px;
-}
-
-#video-controls button{ 
-  background: var(--chrome-gradient);
-  color: var(--jukebox-darker);
-  border: 2px solid var(--jukebox-chrome-dark);
-  padding: 10px 16px;
-  border-radius: 25px;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  transition: all 0.3s ease;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.3);
-  font-family: var(--font-base);
-}
-
-/* Note: Playlist-specific styles moved to Playlist.svelte component for better encapsulation */
-
-/* Jukebox Footer */
-footer{ 
-  background: var(--dark-gradient);
-  border: 2px solid var(--jukebox-chrome);
-  border-radius: 0 0 20px 20px;
-  color: var(--jukebox-chrome);
-  font-size: 14px;
-  padding: 20px;
-  text-align: center;
-  box-shadow: var(--chrome-shadow);
-  margin-top: 20px;
-}
-
-footer em{ 
-  display: block;
-  font-style: normal;
-  margin-bottom: 5px;
-}
-
-footer a{ 
-  color: var(--jukebox-secondary);
-  text-decoration: none;
-  transition: all 0.3s ease;
-}
-
-footer a:hover{ 
-  color: var(--jukebox-accent);
-  text-shadow: 0 0 5px var(--jukebox-accent);
-}
-
-/* Custom Jukebox Scrollbars */
+/* Shared Jukebox Scrollbars */
+.jukebox-scrollbar::-webkit-scrollbar,
 ::-webkit-scrollbar {
   width: 8px;
 }
 
+.jukebox-scrollbar::-webkit-scrollbar-track,
 ::-webkit-scrollbar-track {
   background: var(--jukebox-darker);
   border-radius: 4px;
 }
 
+.jukebox-scrollbar::-webkit-scrollbar-thumb,
 ::-webkit-scrollbar-thumb {
   background: var(--chrome-gradient);
   border-radius: 4px;
   border: 1px solid var(--jukebox-chrome-dark);
 }
 
+.jukebox-scrollbar::-webkit-scrollbar-thumb:hover,
 ::-webkit-scrollbar-thumb:hover {
   background: var(--chrome-gradient-reverse);
 }
@@ -263,8 +115,7 @@ footer a:hover{
 ::-moz-placeholder{ color: var(--jukebox-accent);}
 :-ms-input-placeholder{ color: var(--jukebox-accent);}
 
-/* Jukebox Animations */
-
+/* Shared Jukebox Animations - Available globally for all components */
 @keyframes jukeboxPulse {
   0%, 100% { 
     transform: scale(1);
@@ -276,19 +127,6 @@ footer a:hover{
   }
 }
 
-@keyframes controlPanelGlow {
-  0% { opacity: 0.6; }
-  50% { opacity: 1; }
-  100% { opacity: 0.6; }
-}
-
-@keyframes scanLine {
-  0% { transform: translateX(-100%); opacity: 0; }
-  50% { opacity: 1; }
-  100% { transform: translateX(100%); opacity: 0; }
-}
-
-/* Shared animations for components */
 @keyframes jukeboxSpin {
   from { 
     transform: rotate(0deg);
@@ -300,128 +138,68 @@ footer a:hover{
   }
 }
 
-/* Note: playlistScan animation moved to Playlist.svelte component */
+@keyframes scanLine {
+  0% { transform: translateX(-100%); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateX(100%); opacity: 0; }
+}
 
-/* Jukebox Responsive Design */
-@media (max-width: 1200px) {
-  #main-container{ 
-    max-width: 95%;
-    margin: 15px auto;
-    padding: 15px;
-    gap: 20px;
+@keyframes neonFlow {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes neonPulse {
+  0% { 
+    filter: drop-shadow(0 0 5px var(--jukebox-primary)) brightness(1); 
   }
-  
-  #control-panel {
-    min-width: 300px;
+  100% { 
+    filter: drop-shadow(0 0 20px var(--jukebox-primary)) brightness(1.2); 
   }
 }
 
-@media (max-width: 968px) {
-  #main-container{ 
-    flex-direction: column;
-    height: auto;
-    max-width: 95%;
-    padding: 15px;
-  }
-  
-  #youtube-container{ 
-    height: 500px;
-    order: 1;
-  }
-  
-  #control-panel{ 
-    width: 100%;
-    min-width: auto;
-    order: 2;
-  }
-  
-  .search-result {
-    padding: 10px;
-  }
-  
-  .search-thumbnail {
-    width: 80px;
-    height: 60px;
-  }
+@keyframes cornerGlow {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
 }
 
-@media (max-width: 768px) {
-  body {
-    font-size: 16px;
-  }
-  
-  #main-container {
-    margin: 10px auto;
-    padding: 10px;
-    border-radius: 15px;
-  }
-  
-  #video-controls {
-    flex-direction: column;
-    gap: 8px;
-  }
-  
-  #video-controls button {
-    padding: 12px;
-    font-size: 14px;
-  }
-  
-  .item-title {
-    font-size: 12px;
-    margin-right: 45px;
-  }
-  
-  .item-number {
-    width: 28px;
-    height: 28px;
-    font-size: 11px;
-  }
-  
-  .item-delete {
-    width: 35px;
-    height: 35px;
-    font-size: 12px;
-  }
+@keyframes controlPanelGlow {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
 }
 
-@media (max-width: 480px) {
-  #main-container {
-    margin: 5px;
-    padding: 8px;
-    border-radius: 10px;
-    border-width: 2px;
-  }
-  
-  #current-video-info {
-    padding: 15px;
-  }
-  
-  #playlist {
-    padding: 0 10px 10px;
-  }
-  
-  #playlist h3 {
-    padding: 15px 10px 10px;
-    font-size: 0.9em;
-  }
-  
-  .search-thumbnail {
-    width: 60px;
-    height: 45px;
-  }
-  
-  .search-title {
-    font-size: 12px;
-  }
-  
-  .search-author {
-    font-size: 10px;
-  }
-  
-  footer {
-    border-radius: 0 0 10px 10px;
-    border-width: 2px;
-    font-size: 12px;
-    padding: 15px;
-  }
+/* Shared Utility Classes */
+.jukebox-hover-effect:hover {
+  border-color: var(--jukebox-secondary);
+  box-shadow: 0 0 15px rgba(0,255,255,0.3);
+  transform: translateY(-3px);
+}
+
+.jukebox-button-base {
+  background: var(--chrome-gradient);
+  border: 2px solid var(--jukebox-chrome-dark);
+  border-radius: var(--border-radius-pill);
+  font-family: var(--font-base);
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: var(--transition-standard);
+  cursor: pointer;
+  box-shadow: var(--chrome-shadow);
+  color: var(--jukebox-darker);
+}
+
+.jukebox-chrome-panel {
+  background: var(--chrome-gradient);
+  border: 3px solid var(--jukebox-chrome);
+  border-radius: var(--border-radius-large);
+  box-shadow: var(--chrome-shadow), var(--deep-shadow);
+}
+
+.jukebox-dark-panel {
+  background: var(--dark-gradient);
+  border: 2px solid var(--jukebox-chrome-dark);
+  border-radius: var(--border-radius-medium);
+  box-shadow: inset 0 0 15px rgba(0,255,255,0.05);
 }

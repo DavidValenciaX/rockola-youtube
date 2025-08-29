@@ -118,10 +118,10 @@
 {/if}
 
 <style>
-  /* SearchResults Component - Self-contained styling */
+  /* SearchResults Component - Fully Self-Contained Styles */
   
   .error-message {
-    padding: 18px 25px;
+    padding: 18px var(--spacing-xl);
     background: var(--jukebox-darker);
     color: var(--jukebox-primary);
     border: 2px solid var(--jukebox-primary);
@@ -138,7 +138,7 @@
 
   /* Search Results Container */
   #search-results {
-    padding: 20px;
+    padding: var(--spacing-lg);
     background: var(--dark-gradient);
     /* Use calculated height instead of flex: 1 to prevent recalculation loops */
     height: calc(100% - 400px); /* Subtract YouTube player height */
@@ -165,7 +165,7 @@
   }
 
   #search-results h3 {
-    margin: 0 0 20px 0;
+    margin: 0 0 var(--spacing-lg) 0;
     color: var(--jukebox-secondary);
     text-shadow: 0 0 10px var(--jukebox-secondary);
     font-size: 1.1em;
@@ -185,9 +185,9 @@
   .search-result {
     display: flex;
     background: var(--chrome-gradient);
-    padding: 12px;
+    padding: var(--spacing-sm);
     border: 1px solid var(--jukebox-chrome-dark);
-    border-radius: 12px;
+    border-radius: var(--border-radius-medium);
     overflow: hidden;
     box-shadow: 0 3px 6px rgba(0,0,0,0.3);
     cursor: pointer;
@@ -244,7 +244,7 @@
 
   /* Video Information */
   .search-info {
-    padding: 12px 15px;
+    padding: var(--spacing-sm) 15px;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -253,7 +253,7 @@
 
   .search-title {
     font-weight: 600;
-    margin: 0 0 8px 0;
+    margin: 0 0 var(--spacing-xs) 0;
     font-size: 0.9em;
     line-height: 1.3;
     color: var(--jukebox-darker);
@@ -289,12 +289,12 @@
   /* Action Hints */
   .action-hint {
     position: absolute;
-    top: 8px;
-    right: 8px;
+    top: var(--spacing-xs);
+    right: var(--spacing-xs);
     background: var(--jukebox-darker);
     color: var(--jukebox-secondary);
-    padding: 4px 8px;
-    border-radius: 8px;
+    padding: 4px var(--spacing-xs);
+    border-radius: var(--border-radius-small);
     font-size: 0.7em;
     opacity: 0;
     transition: var(--transition-standard);
@@ -326,46 +326,12 @@
     font-weight: bold;
   }
 
-  /* Component-specific scrollbar */
-  #search-results::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  #search-results::-webkit-scrollbar-track {
-    background: var(--jukebox-darker);
-    border-radius: 4px;
-  }
-
-  #search-results::-webkit-scrollbar-thumb {
-    background: var(--chrome-gradient);
-    border-radius: 4px;
-    border: 1px solid var(--jukebox-chrome-dark);
-  }
-
-  #search-results::-webkit-scrollbar-thumb:hover {
-    background: var(--chrome-gradient-reverse);
-  }
-
-  /* Component-specific animations */
-  @keyframes scanLine {
-    0% { transform: translateX(-100%); opacity: 0; }
-    50% { opacity: 1; }
-    100% { transform: translateX(100%); opacity: 0; }
-  }
-
-  @keyframes fadeInOut {
-    0% { opacity: 0; transform: translateY(-10px); }
-    10% { opacity: 1; transform: translateY(0); }
-    90% { opacity: 1; transform: translateY(0); }
-    100% { opacity: 0; transform: translateY(-10px); }
-  }
-
   /* SweetAlert2 Custom Jukebox Styling - Component specific overrides */
   :global(.jukebox-alert) {
     background: var(--jukebox-darker) !important;
     border: 3px solid var(--jukebox-chrome) !important;
-    border-radius: 20px !important;
-    box-shadow: 0 0 30px rgba(0,255,255,0.4), 0 8px 32px rgba(0,0,0,0.6) !important;
+    border-radius: var(--border-radius-large) !important;
+    box-shadow: 0 0 30px rgba(0,255,255,0.4), 0 var(--spacing-xs) 32px rgba(0,0,0,0.6) !important;
     font-family: var(--font-orbitron) !important;
   }
 
@@ -376,7 +342,7 @@
     font-weight: bold !important;
     text-transform: uppercase !important;
     letter-spacing: 2px !important;
-    margin-bottom: 20px !important;
+    margin-bottom: var(--spacing-lg) !important;
   }
 
   :global(.jukebox-alert-text) {
@@ -413,7 +379,7 @@
   @media (max-width: 768px) {
     .results-grid {
       grid-template-columns: 1fr;
-      gap: 12px;
+      gap: var(--spacing-sm);
     }
     
     .search-result {
@@ -437,8 +403,8 @@
     }
     
     .action-hint {
-      top: 8px;
-      right: 8px;
+      top: var(--spacing-xs);
+      right: var(--spacing-xs);
     }
   }
 

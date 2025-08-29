@@ -84,16 +84,18 @@
 </div>
 
 <style>
+  /* CurrentVideoInfo Component - Fully Self-Contained Styles */
+  
   /* Component-specific variables for CurrentVideoInfo */
   .current-video-info {
-    --info-padding: 25px;
+    --info-padding: var(--spacing-xl);
     --info-border-radius: 15px;
     --info-gap: 15px;
     --progress-height: 8px;
     --control-padding: 12px 18px;
-    --control-border-radius: 25px;
-    --state-padding: 8px 15px;
-    --state-border-radius: 20px;
+    --control-border-radius: var(--border-radius-pill);
+    --state-padding: var(--spacing-xs) 15px;
+    --state-border-radius: var(--border-radius-large);
     
     margin-bottom: 0;
     padding: var(--info-padding);
@@ -126,8 +128,8 @@
     position: absolute;
     bottom: 5px;
     right: 15px;
-    width: 8px;
-    height: 8px;
+    width: var(--spacing-xs);
+    height: var(--spacing-xs);
     background: var(--jukebox-green);
     border-radius: 50%;
     box-shadow: 0 0 10px var(--jukebox-green);
@@ -135,7 +137,7 @@
   }
 
   .info-header {
-    margin-bottom: 20px;
+    margin-bottom: var(--spacing-lg);
   }
 
   .info-title {
@@ -169,7 +171,7 @@
     flex-direction: column;
     gap: 10px;
     background: var(--jukebox-dark);
-    padding: 12px;
+    padding: var(--spacing-sm);
     border-radius: 10px;
     border: 1px solid var(--jukebox-chrome-dark);
   }
@@ -267,7 +269,7 @@
 
   .controls {
     display: flex;
-    gap: 12px;
+    gap: var(--spacing-sm);
   }
 
   .control-btn {
@@ -281,7 +283,7 @@
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 1px;
-    transition: all 0.3s ease;
+    transition: var(--transition-standard);
     flex: 1;
     position: relative;
     overflow: hidden;
@@ -297,7 +299,7 @@
     width: 100%;
     height: 100%;
     background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-    transition: left 0.6s ease;
+    transition: var(--transition-glow);
   }
 
   .control-btn:hover:not(:disabled)::before {
@@ -330,11 +332,11 @@
   .no-video {
     text-align: center;
     color: var(--jukebox-chrome-dark);
-    padding: 20px 0;
+    padding: var(--spacing-lg) 0;
   }
 
   .no-video p {
-    margin: 0 0 20px 0;
+    margin: 0 0 var(--spacing-lg) 0;
     font-size: 1.1em;
     color: var(--jukebox-secondary);
     text-shadow: 0 0 5px var(--jukebox-secondary);
@@ -363,12 +365,6 @@
   }
 
   /* Component-specific animations */
-  @keyframes scanLine {
-    0% { transform: translateX(-100%); opacity: 0; }
-    50% { opacity: 1; }
-    100% { transform: translateX(100%); opacity: 0; }
-  }
-
   @keyframes statusBlink {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.3; }
@@ -392,7 +388,7 @@
   /* Component-specific responsive design */
   @media (max-width: 480px) {
     .current-video-info {
-      --info-padding: 20px;
+      --info-padding: var(--spacing-lg);
     }
     
     .controls {
