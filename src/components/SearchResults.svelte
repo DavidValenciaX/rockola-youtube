@@ -183,7 +183,9 @@
 
   /* Individual Search Result */
   .search-result {
-    display: flex;
+    display: grid;
+    grid-auto-flow: column;
+    gap: 2rem;
     background: var(--chrome-gradient);
     padding: var(--spacing-sm);
     border: 1px solid var(--jukebox-chrome-dark);
@@ -193,7 +195,7 @@
     cursor: pointer;
     transition: var(--transition-standard);
     position: relative;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
   }
 
@@ -233,6 +235,8 @@
     height: 95px;
     object-fit: cover;
     flex-shrink: 0;
+    border-radius: 8px;
+    border: 2px solid var(--jukebox-chrome-dark);
     border-right: 2px solid var(--jukebox-chrome-dark);
     transition: var(--transition-standard);
   }
@@ -244,7 +248,7 @@
 
   /* Video Information */
   .search-info {
-    padding: var(--spacing-sm) 15px;
+    /*padding: var(--spacing-sm) 15px;*/
     flex: 1;
     display: flex;
     flex-direction: column;
