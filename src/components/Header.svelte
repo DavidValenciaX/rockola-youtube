@@ -63,7 +63,7 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    filter: drop-shadow(0 0 10px var(--jukebox-primary));
+    filter: drop-shadow(0 0 15px var(--jukebox-accent));
     animation: neonPulse 2s ease-in-out infinite alternate;
     position: relative;
   }
