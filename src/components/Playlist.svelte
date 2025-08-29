@@ -52,6 +52,7 @@
 </div>
 
 <style>
+  /* Playlist Container - Component Specific */
   #playlist {
     background: var(--dark-gradient);
     border: 2px solid var(--jukebox-chrome-dark);
@@ -62,9 +63,13 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    height: 100%;
+    flex: 1;
+    min-height: 0;
+    color: var(--jukebox-chrome);
+    font-size: 14px;
   }
 
+  /* Animated Scanner Line */
   #playlist::before {
     content: '';
     position: absolute;
@@ -79,6 +84,7 @@
     animation: playlistScan 3s ease-in-out infinite;
   }
 
+  /* Playlist Header */
   h3 {
     margin: 0;
     padding: 20px 25px 15px;
@@ -89,9 +95,10 @@
     text-shadow: 0 0 10px var(--jukebox-accent);
     border-bottom: 1px solid var(--jukebox-chrome-dark);
     background: var(--jukebox-darker);
-    font-family: 'Orbitron', 'Montserrat', sans-serif;
+    font-family: var(--font-orbitron);
   }
 
+  /* Playlist Items Container */
   #upcoming {
     list-style: none;
     padding: 15px;
@@ -99,9 +106,10 @@
     overflow-y: auto;
     flex: 1;
     min-height: 0;
+    cursor: pointer;
   }
 
-  /* Jukebox Style Playlist Items */
+  /* Individual Playlist Items */
   .playlist-item {
     display: flex;
     align-items: center;
@@ -115,8 +123,10 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     overflow: hidden;
     position: relative;
+    cursor: pointer;
   }
 
+  /* Hover Indicator Bar */
   .playlist-item::before {
     content: '';
     position: absolute;
@@ -129,6 +139,7 @@
     transition: opacity 0.3s ease;
   }
 
+  /* Playlist Item Hover Effects */
   .playlist-item:hover {
     background: var(--chrome-gradient-reverse);
     border-color: var(--jukebox-secondary);
@@ -145,7 +156,7 @@
     margin-bottom: 5px;
   }
 
-  /* Jukebox Number Buttons */
+  /* Item Number Circles */
   .item-number {
     background: var(--neon-gradient);
     color: white;
@@ -163,9 +174,10 @@
     transition: all 0.3s ease;
     border: 2px solid var(--jukebox-chrome);
     margin: 10px 0 10px 12px;
-    font-family: 'Orbitron', 'Montserrat', sans-serif;
+    font-family: var(--font-orbitron);
   }
 
+  /* Clickable Title Buttons */
   .item-title {
     flex: 1;
     margin: 0;
@@ -185,7 +197,7 @@
     border-radius: 8px;
     position: relative;
     
-    /* Reset button default styles */
+    /* Button Reset Styles */
     background: none;
     border: none;
     text-align: left;
@@ -208,9 +220,7 @@
     background: rgba(0, 255, 255, 0.15);
   }
 
-  /* Removed next-to-play styling to avoid confusion with currently playing video */
-
-  /* Delete Button - Jukebox Style */
+  /* Delete Buttons */
   .item-delete {
     background: var(--chrome-gradient);
     border: 1px solid var(--jukebox-chrome-dark);
@@ -238,6 +248,7 @@
     transform: scale(1.15);
   }
 
+  /* Playlist Summary Footer */
   .playlist-summary {
     margin: 0;
     padding: 15px 25px 20px;
@@ -253,9 +264,10 @@
     color: var(--jukebox-secondary);
     font-style: italic;
     text-shadow: 0 0 5px var(--jukebox-secondary);
-    font-family: 'Orbitron', 'Montserrat', sans-serif;
+    font-family: var(--font-orbitron);
   }
 
+  /* Empty State */
   .empty-playlist {
     text-align: center;
     color: var(--jukebox-chrome-dark);
@@ -277,7 +289,7 @@
     opacity: 0.8;
   }
 
-  /* Custom scrollbar for playlist */
+  /* Component-Specific Scrollbar */
   #upcoming::-webkit-scrollbar {
     width: 8px;
   }
@@ -297,7 +309,7 @@
     background: var(--chrome-gradient-reverse);
   }
 
-  /* Animations */
+  /* Component-Specific Animations */
   @keyframes playlistScan {
     0% { transform: translateX(-100%); opacity: 0; }
     50% { opacity: 1; }
@@ -315,7 +327,26 @@
     }
   }
 
-  /* Responsive Design */
+  /* Component-Specific Responsive Design */
+  @media (max-width: 768px) {
+    .item-title {
+      font-size: 0.85em;
+      margin-right: 45px;
+    }
+    
+    .item-number {
+      width: 28px;
+      height: 28px;
+      font-size: 0.75em;
+    }
+    
+    .item-delete {
+      width: 35px;
+      height: 35px;
+      font-size: 1em;
+    }
+  }
+
   @media (max-width: 480px) {
     .playlist-item {
       padding: 0;
