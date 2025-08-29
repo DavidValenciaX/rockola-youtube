@@ -58,8 +58,8 @@
     color: var(--jukebox-darker);
     font-weight: 500;
     box-shadow: var(--chrome-shadow);
-    transition: all 0.3s ease;
-    font-family: 'Orbitron', 'Montserrat', sans-serif;
+    transition: var(--transition-standard);
+    font-family: var(--font-base);
   }
 
   #query::placeholder {
@@ -92,7 +92,7 @@
     justify-content: center;
     cursor: pointer;
     font-size: 1.3em;
-    transition: all 0.3s ease;
+    transition: var(--transition-standard);
     box-shadow: var(--chrome-shadow),
                 0 0 10px var(--jukebox-primary);
     position: relative;
@@ -107,7 +107,7 @@
     width: 100%;
     height: 100%;
     background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-    transition: left 0.6s ease;
+    transition: var(--transition-glow);
   }
 
   #submit:hover:not(:disabled)::before {
@@ -140,18 +140,7 @@
     filter: drop-shadow(0 0 5px var(--jukebox-accent));
   }
 
-  @keyframes jukeboxSpin {
-    from { 
-      transform: rotate(0deg);
-      filter: drop-shadow(0 0 5px var(--jukebox-accent));
-    }
-    to { 
-      transform: rotate(360deg);
-      filter: drop-shadow(0 0 10px var(--jukebox-accent));
-    }
-  }
-
-  /* Responsive Design */
+  /* Responsive Design - Component-specific breakpoints */
   @media (max-width: 768px) {
     #query {
       width: 280px;

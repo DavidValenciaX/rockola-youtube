@@ -26,6 +26,10 @@
   /* Design Tokens - Typography */
   --font-orbitron: 'Orbitron', 'Montserrat', Arial, sans-serif;
   --font-base: 'Orbitron', 'Montserrat', Arial, sans-serif;
+  
+  /* Design Tokens - Transitions */
+  --transition-standard: all 0.3s ease;
+  --transition-glow: left 0.6s ease;
 }
 
 /* CSS Reset with Jukebox Foundation */
@@ -369,6 +373,18 @@ footer a:hover{
   0% { transform: translateX(-100%); opacity: 0; }
   50% { opacity: 1; }
   100% { transform: translateX(100%); opacity: 0; }
+}
+
+/* Shared animations for components */
+@keyframes jukeboxSpin {
+  from { 
+    transform: rotate(0deg);
+    filter: drop-shadow(0 0 5px var(--jukebox-accent));
+  }
+  to { 
+    transform: rotate(360deg);
+    filter: drop-shadow(0 0 10px var(--jukebox-accent));
+  }
 }
 
 /* Note: playlistScan animation moved to Playlist.svelte component */
