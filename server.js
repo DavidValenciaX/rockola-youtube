@@ -48,7 +48,7 @@ app.get('/', (req, res) => {
 // Proxy para búsquedas de YouTube (DEBE estar antes del catch-all)
 app.get('/api/search', async (req, res) => {
   const query = req.query.q;
-  const maxResults = req.query.max_results || 10;
+  const maxResults = req.query.max_results || 20;
   
   if (!query) {
     return res.status(400).json({ error: 'Se requiere un parámetro de búsqueda (q)' });

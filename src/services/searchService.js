@@ -2,7 +2,7 @@
 export const searchService = {
   SEARCH_ENDPOINT: '/api/search',
 
-  async searchVideos(query, maxResults = 10) {
+  async searchVideos(query, maxResults = 20) {
     if (!query || !query.trim()) {
       throw new Error('Search query is required');
     }
