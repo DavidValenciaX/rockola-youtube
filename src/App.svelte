@@ -12,12 +12,12 @@
 <div id="main-container">
   <!-- YouTube Player Container -->
   <div id="youtube-container">
-    <YoutubePlayer />
     <SearchResults />
   </div>
   
   <!-- Control Panel -->
   <div id="control-panel">
+    <YoutubePlayer />
     <CurrentVideoInfo />
     <Playlist />
   </div>

@@ -101,7 +101,6 @@
     padding: var(--info-padding);
     background: var(--jukebox-darker);
     border: 2px solid var(--jukebox-chrome-dark);
-    border-radius: var(--info-border-radius) var(--info-border-radius) 0 0;
     color: var(--jukebox-secondary);
     position: relative;
     box-shadow: inset 0 0 20px rgba(0,255,255,0.1),
