@@ -3,8 +3,8 @@
 </script>
 
 <header>
-  <h1>Rockola de <strong>YouTube</strong></h1>
   <SearchForm />
+  <h1>Rockola de <strong>YouTube</strong></h1>
 </header>
 
 <style>
