@@ -141,7 +141,7 @@
     padding: var(--spacing-lg);
     background: var(--dark-gradient);
     /* Use calculated height instead of flex: 1 to prevent recalculation loops */
-    height: calc(100% - 400px); /* Subtract YouTube player height */
+    height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
     border-top: 2px solid var(--jukebox-chrome);
