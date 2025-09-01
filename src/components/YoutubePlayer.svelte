@@ -73,7 +73,7 @@
     position: relative;
     width: 100%;
     flex: 1;
-    min-height: 500px;
+    aspect-ratio: 16 / 9;
     background-color: #000;
     display: flex;
     flex-direction: column;
@@ -208,17 +208,7 @@
   }
 
   /* Component-specific responsive adjustments */
-  @media (max-width: 968px) {
-    .youtube-player-container {
-      min-height: 280px;
-    }
-  }
-  
   @media (max-width: 768px) {
-    .youtube-player-container {
-      min-height: 250px;
-    }
-    
     .no-video-message h3 {
       font-size: 1.2em;
     }
@@ -233,12 +223,6 @@
     
     .checkbox-container {
       font-size: 0.85em;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .youtube-player-container {
-      min-height: 200px;
     }
   }
 </style>
