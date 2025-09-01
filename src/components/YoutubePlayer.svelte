@@ -72,17 +72,18 @@
   .youtube-player-container {
     position: relative;
     width: 100%;
-    height: 400px;
+    flex: 1;
+    min-height: 500px;
     background-color: #000;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
     justify-content: flex-start;
   }
 
   #youtube-player {
     width: 100%;
-    flex-grow: 1;
+    flex: 1;
     min-height: 0;
   }
 
@@ -207,9 +208,15 @@
   }
 
   /* Component-specific responsive adjustments */
+  @media (max-width: 968px) {
+    .youtube-player-container {
+      min-height: 280px;
+    }
+  }
+  
   @media (max-width: 768px) {
     .youtube-player-container {
-      height: 300px;
+      min-height: 250px;
     }
     
     .no-video-message h3 {
@@ -226,6 +233,12 @@
     
     .checkbox-container {
       font-size: 0.85em;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .youtube-player-container {
+      min-height: 200px;
     }
   }
 </style>
