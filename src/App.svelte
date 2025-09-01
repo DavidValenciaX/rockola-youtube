@@ -34,7 +34,8 @@
   
   /* Jukebox Cabinet Main Container */
   #main-container { 
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     margin: var(--spacing-lg) auto;
     min-height: 800px;
     background: var(--dark-gradient);
@@ -74,7 +75,6 @@
 
   /* Jukebox Screen Container */
   #youtube-container { 
-    flex: 2;
     display: flex;
     flex-direction: column;
     background: var(--jukebox-darker);
@@ -102,7 +102,6 @@
 
   /* Jukebox Control Panel */
   #control-panel { 
-    flex: 1;
     min-width: 350px;
     background: var(--chrome-gradient);
     border: 3px solid var(--jukebox-chrome);
@@ -174,7 +173,8 @@
 
   @media (max-width: 968px) {
     #main-container { 
-      flex-direction: column;
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto;
       height: auto;
       max-width: 95%;
       padding: 15px;
@@ -182,13 +182,13 @@
     
     #youtube-container { 
       height: 500px;
-      order: 1;
+      grid-row: 1;
     }
     
     #control-panel { 
       width: 100%;
       min-width: auto;
-      order: 2;
+      grid-row: 2;
     }
   }
 
