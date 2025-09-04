@@ -41,7 +41,7 @@ searchError.subscribe(error => {
 // Search actions
 export const searchActions = {
   async performSearch(query) {
-    if (!query || !query.trim()) {
+    if (!query?.trim()) {
       searchError.set('Search query is required');
       return;
     }
