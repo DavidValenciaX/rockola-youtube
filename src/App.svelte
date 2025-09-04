@@ -63,9 +63,9 @@
   /* Decorative corner elements */
   #main-container::after {
     content: '';
-    position: absolute;
-    top: 15px;
-    right: 15px;
+    position: fixed;
+    top: 7.5px;
+    right: 7.5px;
     width: 30px;
     height: 30px;
     background: radial-gradient(circle, var(--jukebox-secondary), transparent);
