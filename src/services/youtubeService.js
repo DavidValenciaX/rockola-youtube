@@ -46,7 +46,7 @@ export class YouTubeService {
   loadYouTubeAPI() {
     if (this.apiLoaded) return;
     
-    if (window.YT && window.YT.Player) {
+    if (window.YT?.Player) {
       this.apiLoaded = true;
       this.ready = true;
       this.createPlayer();
@@ -313,7 +313,7 @@ export class YouTubeService {
 
   // Method to get upcoming from playlist store if available
   getUpcomingFromStore() {
-    if (playlistStoreActions && playlistStoreActions.getUpcoming) {
+    if (playlistStoreActions?.getUpcoming) {
       return playlistStoreActions.getUpcoming();
     }
     return this.getUpcoming();
