@@ -16,34 +16,41 @@ Rockola de YouTube is a modern web-based music player application that leverages
 ## Technology Stack
 
 ### Frontend
+
 - **Svelte 5** - Modern reactive framework
 - **Vite** - Fast build tool and development server
 - **JavaScript ES6+** - Modern JavaScript features
 
 ### Backend
+
 - **Node.js** (≥18.11.0) - Runtime environment
 - **Express.js** - Web server framework
 - **CORS** - Cross-origin resource sharing
 - **Axios** - HTTP client for API requests
 
 ### APIs
+
 - **YouTube IFrame Player API** - Official embedded player
 - **YouTube Web Search** - Search functionality via backend proxy
 
 ## Installation
 
 ### Prerequisites
+
 - Node.js ≥ 18.11.0
 - npm (comes with Node.js)
 
 ### Setup
+
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/DavidValenciaX/rockola-youtube.git
    cd rockola-youtube
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    ```
@@ -51,12 +58,15 @@ Rockola de YouTube is a modern web-based music player application that leverages
 ## Development
 
 ### Start Development Server
+
 ```bash
 npm run dev
 ```
+
 This starts both the Express backend server (localhost:3000) and Vite development server (localhost:5173) concurrently.
 
 ### Individual Commands
+
 ```bash
 # Start only the backend server
 npm run dev:server
@@ -66,33 +76,40 @@ npm run dev:client
 ```
 
 ### Development URLs
-- **Frontend (Svelte)**: http://localhost:5173
-- **Backend (Express)**: http://localhost:3000
-- **API Endpoint**: http://localhost:3000/api/search
+
+- **Frontend (Svelte)**: <http://localhost:5173>
+- **Backend (Express)**: <http://localhost:3000>
+- **API Endpoint**: <http://localhost:3000/api/search>
 
 ## Production
 
 ### Build for Production
+
 ```bash
 npm run build
 ```
+
 This creates optimized files in the `dist/` directory.
 
 ### Start Production Server
+
 ```bash
 npm start
 ```
+
 or
+
 ```bash
 NODE_ENV=production npm start
 ```
 
 ### Production URL
-- **Application**: http://localhost:3000
+
+- **Application**: <http://localhost:3000>
 
 ## Project Structure
 
-```
+```bash
 rockola-youtube/
 ├── src/                     # Svelte source files
 │   ├── components/          # Svelte components
@@ -123,21 +140,25 @@ rockola-youtube/
 ## Key Features Explanation
 
 ### YouTube Integration
+
 - Uses YouTube IFrame Player API for compliant video playback
 - Automatic player initialization and state management
 - Progress tracking and playback controls
 
 ### Search Functionality
+
 - Backend proxy to YouTube search to avoid CORS issues
 - Real-time search results with thumbnails
 - Click to play immediately or add to queue
 
 ### Playlist Management
+
 - Persistent queue stored in localStorage
 - Automatic progression to next video
 - Manual queue management (add/remove videos)
 
 ### State Management
+
 - Reactive Svelte stores for all application state
 - Automatic persistence of important data
 - Real-time UI updates based on player state
@@ -145,15 +166,18 @@ rockola-youtube/
 ## API Endpoints
 
 ### Search Videos
-```
+
+```bash
 GET /api/search?q={query}&max_results={number}
 ```
 
 **Parameters:**
+
 - `q` (required): Search query
 - `max_results` (optional): Number of results (default: 10)
 
 **Response:**
+
 ```json
 [
   {
@@ -179,6 +203,7 @@ GET /api/search?q={query}&max_results={number}
 This project has been completely refactored from AngularJS to Svelte while maintaining all existing functionality:
 
 ### What's New
+
 - ⚡ **50% faster** build times with Vite
 - 📦 **Smaller bundle size** (~45KB vs ~200KB+)
 - 🔄 **Better reactivity** with Svelte stores
@@ -186,6 +211,7 @@ This project has been completely refactored from AngularJS to Svelte while maint
 - 📱 **Improved mobile experience**
 
 ### What's Preserved
+
 - ✅ All existing features work identically
 - ✅ Same API endpoints and backend functionality
 - ✅ Compatible with existing localStorage data
@@ -210,6 +236,7 @@ This project has been completely refactored from AngularJS to Svelte while maint
    - Check Node.js version: `node --version`
 
 ### Performance Tips
+
 - Use production build for better performance
 - Clear localStorage if experiencing issues
 - Disable browser extensions that might interfere

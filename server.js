@@ -5,10 +5,9 @@
 
 import express from 'express';
 import cors from 'cors';
-import path from 'path';
+import path, { dirname } from 'path';
 import axios from 'axios';
 import { fileURLToPath } from 'url';
-import { dirname } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
