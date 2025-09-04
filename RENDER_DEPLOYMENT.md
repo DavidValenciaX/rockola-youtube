@@ -6,24 +6,28 @@ The application has been successfully configured for Render deployment!
 
 ## Final Configuration
 
-### Build Process:
+### Build Process
+
 ```json
 "build": "npm install --include=dev && npx vite build"
 ```
 
-### Server Configuration:
+### Server Configuration
+
 - **Host**: `0.0.0.0` (required for Render)
 - **Port**: Uses `process.env.PORT` (Render sets this automatically)
 - **Static Files**: Serves from `dist/` in production
 
 ## Render Dashboard Configuration
 
-### Service Settings:
+### Service Settings
+
 - **Root Directory**: `./` (or leave empty)
 - **Build Command**: `npm run build`
 - **Start Command**: `npm start`
 
-### Environment Variables:
+### Environment Variables
+
 - **NODE_ENV**: `production`
 
 ## What Was Fixed
@@ -38,7 +42,7 @@ The application has been successfully configured for Render deployment!
 
 When you deploy, you should see:
 
-```
+```bash
 ==> Running build command 'npm run build'...
 > npm install --include=dev && npx vite build
 added 182 packages in 2s
