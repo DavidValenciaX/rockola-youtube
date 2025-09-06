@@ -60,19 +60,6 @@
     pointer-events: none;
   }
 
-  /* Decorative corner elements */
-  #main-container::after {
-    content: '';
-    position: fixed;
-    top: 7.5px;
-    right: 7.5px;
-    width: 30px;
-    height: 30px;
-    background: radial-gradient(circle, var(--jukebox-secondary), transparent);
-    border-radius: 50%;
-    animation: cornerGlow 3s ease-in-out infinite;
-  }
-
   /* Jukebox Screen Container */
   #youtube-container { 
     display: flex;
